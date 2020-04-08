@@ -37,6 +37,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
+import { httpInterceptorProviders  } from "./http-interceptors/index"
 
 
 
@@ -67,7 +68,7 @@ import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
     UserRegisterComponent,
     HomePageComponent,
     BsNavbarComponent
-    
+
   ],
   imports: [
     BrowserModule,
@@ -85,6 +86,7 @@ import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
     BatchService,
     AuthService,
     ValidationService,
+    httpInterceptorProviders,
     BsModalService
   ],
   bootstrap: [AppComponent]

@@ -24,7 +24,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 
 const routes: Routes = [
   {path: 'home/drivers', component: DriverInfoComponent},
-  {path: 'home/riders', component: DriverComponent}, 
+  {path: 'home/riders', component: DriverComponent},
   {path: 'all-drivers', component: DriverInfoComponent},
   {path: 'login', component: LoginComponent},
   {path: 'login/admin', component: AdminLoginComponent},
@@ -44,7 +44,8 @@ const routes: Routes = [
 {path: 'driver', component: DriverContactModalComponent},
 {path: 'navbar', component: NavbarComponent},
 {path: '', component: HomePageComponent},
-{path: '**', pathMatch: 'full', redirectTo: ''}];
+{path: '**', pathMatch: 'full', redirectTo: ''}
+];
 
 
 @NgModule({

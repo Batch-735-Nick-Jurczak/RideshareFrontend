@@ -23,7 +23,7 @@ describe('AuthService', () => {
     providers: [{provide: APP_BASE_HREF, useValue: '/my/app'}]
   }));
    let service: AuthService;
-   
+
   beforeEach(() => {
     service = TestBed.get(AuthService);
     service.loggedIn = false;
@@ -39,4 +39,9 @@ describe('AuthService', () => {
     service.loggedIn = false;
     expect(service.loggedIn).toBe(false);
   })
+
+
+
+
+
 });

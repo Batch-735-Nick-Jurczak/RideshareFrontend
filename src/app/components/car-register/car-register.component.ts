@@ -16,7 +16,7 @@ import { AuthService } from 'src/app/services/auth-service/auth.service';
    */
 
 export class CarRegisterComponent implements OnInit {
- 
+
   /**
    * Set years as an array of numbers
    * Set userId
@@ -26,7 +26,7 @@ export class CarRegisterComponent implements OnInit {
   years: number[] = [];
   userId: number;
   car: Car = new Car();
-  
+
   /**
    * This is constructor
    * @param carService A dependency of a car service is injected.
@@ -38,21 +38,18 @@ export class CarRegisterComponent implements OnInit {
   /**
    * This is an OnInit function that sets the user id as the parsed string in session storage.
    * The system will check if the user id is valid.
-   * Once validated, it will initialize the fields. 
+   * Once validated, it will initialize the fields.
    */
   ngOnInit() {
-    this.userId = this.authService.user.userId;
+    // this.userId = this.authService.user.userId;
 
-    if (!this.userId) {
-      this.router.navigate(['']);
-    } else {
       let currentYear = new Date().getFullYear();
       let availableYear = currentYear - 15;
       for (let i = availableYear; i <= currentYear; i++) {
         this.years.push(i);
         this.car.year = this.years[0];
       }
-    }
+
   }
 
  /**
@@ -63,7 +60,7 @@ export class CarRegisterComponent implements OnInit {
 		let option = event.target.options.selectedIndex;
 		this.car.year = this.years[option];
   }
-  
+
   /**
    * A POST method that adds a car object to the user
    */

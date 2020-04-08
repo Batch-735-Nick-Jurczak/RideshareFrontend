@@ -28,7 +28,7 @@ export class AdminLoginComponent implements OnInit {
           this.chosenAdmin = this.admins[0];
       });
   }
-  
+
   changeAdmin(event) {
     this.chosenAdmin = this.admins[event.target.selectedIndex];
   }
@@ -44,7 +44,7 @@ export class AdminLoginComponent implements OnInit {
 				if (!admin.adminId) {
 					this.loginFailed();
 				} else {
-					if (!this.authService.loginAsAdmin(admin, this.userName)) {
+					if (!this.authService.loginAsAdmin(admin)) {
 						this.loginFailed();
 					}
 				}

@@ -1,7 +1,8 @@
-<a (click)="openModal(template)">Login</a >
+<a (click)="openModal(template)">Login Hello</a >
 <ng-template #template >
 <div class="container">
     <div class="text-center" id="login-form">
+
   <!-- <div class="form-group">
              <div class="dropdown">
                 <label for="users">Select Account:</label><br>
@@ -14,9 +15,9 @@
                     </div>
                     <button type="button" id="next-btn" *ngIf="curPage<totalPage" (click)="nextPage()">v</button>
                 </div>
-            </div> 
+            </div>
         </div> -->
-       
+
         <div class="modal-title-container">
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
           <span aria-hidden="true">&times;</span>
@@ -35,7 +36,7 @@
               <input type="password" [(ngModel)]="passWord" class="form-control" id="formGroupExampleInput2" placeholder="Enter Password">
               <p  class="error">{{pwdError}}</p>
             </div>
-          
+
         <p class="alert alert-danger" *ngIf="failed"><strong>Login Failed!</strong></p>
         <p class="alert alert-danger" *ngIf="banned"><strong>You are banned</strong></p>
           <button type="submit" class="btn btn-primary" id="sign-in-btn" (click)="login()">Login</button>
@@ -43,4 +44,4 @@
     </div>
 </div>
 </div>
-</ng-template> 
+</ng-template>

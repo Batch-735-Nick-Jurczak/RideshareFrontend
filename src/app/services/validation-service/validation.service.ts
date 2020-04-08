@@ -8,8 +8,8 @@ export class ValidationService {
     * This is the contructor for the validation service.
 	*/
   constructor() { }
-  
-   /** 
+
+   /**
   * this function validates the number of seats of the car.
   * @function
   * @returns {boolean}
@@ -44,14 +44,14 @@ export class ValidationService {
 	validatePhone(phone: string) {
 		return /^\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})$/.test(phone);
   }
-  
+
   /**
 	 * This function formats the name string.
 	 */
 	nameFormat(name: string) {
 
 		let newName: string = "";
-		
+
 		newName += name[0].toUpperCase();
 
 		for (let i = 1; i < name.length; i++) {
@@ -73,5 +73,5 @@ export class ValidationService {
 	phoneFormat(phone: string) {
 		return phone.replace(/[^0-9]/g, '').replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
 	}
-  
+
 }
