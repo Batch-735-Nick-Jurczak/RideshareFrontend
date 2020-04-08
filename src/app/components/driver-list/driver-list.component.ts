@@ -32,7 +32,6 @@ constructor(private http: HttpClient, private userService: UserService) { }
 
 ngOnInit() {
   this.drivers = [];
-  console.log(this.location);
   this.userService.getRidersForLocation1(this.location).subscribe(
     res => {
       //console.log(res);
@@ -95,7 +94,7 @@ showDriversOnMap(origin, drivers) {
   drivers.forEach(element => {
     var directionsService = new google.maps.DirectionsService;
     var directionsRenderer = new google.maps.DirectionsRenderer({
-      draggable: true,
+      draggable: false,
       map: this.map
     });
     this.displayRoute(origin, element.origin, directionsService, directionsRenderer);
