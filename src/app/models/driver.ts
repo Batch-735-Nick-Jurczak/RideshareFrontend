@@ -1,9 +1,11 @@
 interface DriverProps {
     id: number;
     name: string;
-    origin: string;
+    location: string;
+    email: string;
+    phoneNumber: string;
     distance: string;
-    time: string;
+    duration: string;
 }
 
 export class Driver {
@@ -30,12 +32,28 @@ export class Driver {
         this.driverProps.name = name;
     }
 
-    get origin(): string {
-        return this.driverProps.origin;
+    get location(): string {
+        return this.driverProps.location;
     }
 
-    set origin(origin: string) {
-        this.driverProps.origin = origin;
+    set location(location: string) {
+        this.driverProps.location = location;
+    }
+
+    get email(): string {
+        return this.driverProps.email;
+    }
+
+    set email(email: string) {
+        this.driverProps.email = email;
+    }
+
+    get phoneNumber(): string {
+        return this.driverProps.phoneNumber;
+    }
+
+    set phoneNumber(phoneNumber: string) {
+        this.driverProps.phoneNumber = phoneNumber;
     }
 
     get distance(): string {
@@ -46,12 +64,12 @@ export class Driver {
         this.driverProps.distance = distance;
     }
 
-    get time(): string {
-        return this.driverProps.time;
+    get duration(): string {
+        return this.driverProps.duration;
     }
 
-    set time(time: string) {
-        this.driverProps.time = time;
+    set duration(duration: string) {
+        this.driverProps.duration = duration;
     }
 
 }

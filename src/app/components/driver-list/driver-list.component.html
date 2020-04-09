@@ -20,7 +20,7 @@
           <tr *ngFor="let driver of drivers">
             <td>{{ driver.name }} </td>
             <td>{{ driver.distance }}</td>
-            <td>{{ driver.time }}</td>
+            <td>{{ driver.duration }}</td>
             <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" (click)="addToModal(driver)">View</button></td>
           </tr>
         </tbody>
@@ -48,15 +48,33 @@
             <div id="driverDetails" class="table-responsive">
               <table id="driverDetailsTable" class="table table-boardered table-striped table-hover">
                 
-                  <tr id="driverDetailsHeaderRow" class="text-center">
-                      <th style="width: 33.33%" id="dsHeader">Name</th>
-                      <th style="width: 33.33%" id="dhHeader">Location</th>
-                      <th style="width: 33.33%"id="bHeader">Phone</th>
+                  <!-- <tr id="driverDetailsHeaderRow" class="text-center">
+                      <th style="width: 25%" id="dsHeader">Name</th>
+                      <th style="width: 25%" id="dhHeader">Location</th>
+                      <th style="width: 25%"id="bHeader">Email</th>
+                      <th style="width: 25%"id="bHeader">Phone</th>
                   </tr>
                   <tr id="approvalStatusRow" class="text-center list-form">
-                    <td id="nameid">{{drivername}}</td>
-                    <td id="emailid">{{driverorigin}}</td>
-                    <td id="phoneid">{{drivername}}</td>
+                    <td id="nameid">{{driverName}}</td>
+                    <td id="emailid">{{driverLocation}}</td>
+                    <td id="phoneid">{{driverEmail}}</td>
+                    <td id="phoneid">{{driverPhoneNumber}}</td>
+                  </tr> -->
+                  <tr id="driverName" class="text-center list-form">
+                    <td id="namehead">Name</td>
+                    <td id="nameid">{{driverName}}</td>
+                  </tr>
+                  <tr id="driverLocation" class="text-center list-form">
+                    <td id="locationhead">Address</td>
+                    <td id="locationid">{{driverLocation}}</td>
+                  </tr>
+                  <tr id="driverEmail" class="text-center list-form">
+                    <td id="emailhead">Email</td>
+                    <td id="emailid"><a href="mailto:{{driverEmail}}">{{driverEmail}}</a></td>
+                  </tr>
+                  <tr id="driverPhoneNumber" class="text-center list-form">
+                    <td id="phonehead">Phone</td>
+                    <td id="phoneid"><a href="tel:+{{driverPhoneNumber}}">{{driverPhoneNumber}}</a></td>
                   </tr>
                 
               </table>
