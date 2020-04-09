@@ -35,7 +35,7 @@ describe('AuthService', () => {
   });
 
   it('#isLoggedIn() should confirm if logged in', () => {
-    // const isLoggedIn = false;
+
     service.loggedIn = false;
     expect(service.loggedIn).toBe(false);
   })
