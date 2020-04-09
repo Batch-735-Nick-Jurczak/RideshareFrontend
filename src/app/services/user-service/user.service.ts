@@ -4,7 +4,7 @@ import { User } from 'src/app/models/user';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth-service/auth.service';
-import { LogService } from "../log.service"
+import { LogService } from '../log.service'
 import { environment } from '../../../environments/environment';
 
 
@@ -14,6 +14,16 @@ import { environment } from '../../../environments/environment';
 })
 
 export class UserService {
+
+	/**
+	 * Constructor
+	 * @param http An HTTP client object
+	 * @param router A router
+	 * @param log A log service
+	 * @param authService An authorization service
+	 */
+
+	constructor(private http: HttpClient, private router: Router, private log: LogService, private authService: AuthService) { }
 
 	/**
 	 * This is an user service
@@ -32,15 +42,15 @@ export class UserService {
 	url: string = environment.userUri;
 	user: User = new User();
 
-	/**
-	 * Constructor
-	 * @param http An HTTP client object
-	 * @param router A router
-	 * @param log A log service
-	 * @param authService An authorization service
-	 */
+    /**
+     * body to send update data
+     */
+      private body: string;
 
-	constructor(private http: HttpClient, private router: Router, private log: LogService, private authService: AuthService) { }
+      private httpOptions = {
+        headers: new HttpHeaders({"Content-Type": "application/json"}),
+        observe: "response" as "body"
+      }
   
 	/**
 	 * A GET method for all users
@@ -208,16 +218,6 @@ export class UserService {
 		showAllUser(): Observable<any>{
 		  return this.http.get(this.url);
 		}
-
-    /**
-     * body to send update data
-     */
-      private body: string;
-
-      private httpOptions = {
-        headers: new HttpHeaders({"Content-Type": "application/json"}),
-        observe: "response" as "body"
-      }
   
     /**
      * A function that bans users.
