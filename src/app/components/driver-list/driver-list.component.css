@@ -12,3 +12,11 @@ table {
 .btn-outline-secondary{
     font-size:14px;
 }
+.col-lg-6 {
+    -webkit-box-flex: 0;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+table {
+    width: 100%;
+}

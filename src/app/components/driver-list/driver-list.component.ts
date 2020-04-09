@@ -7,10 +7,9 @@ import { Driver } from 'src/app/models/driver';
 @Component({
   selector: 'app-driver-list',
   templateUrl: './driver-list.component.html',
-  styleUrls: ['./driver-list.component.css']
+  styleUrls: ['./driver-list.component.css'],
 })
 export class DriverListComponent implements OnInit {
-
   page = 1; // default page for pagination of driver table
 
   // map properties
@@ -27,36 +26,139 @@ export class DriverListComponent implements OnInit {
   driverPhoneNumber: string;
 
   // set map properties
-  @ViewChild('map', null) mapElement: any;
+  @ViewChild('map', null)
+  mapElement: any;
   map: google.maps.Map;
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  // set sort properties
+  sortOrder: string;
+  orderedBy: string;
+
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   ngOnInit() {
-
+    // set default sort order
+    this.sortOrder = 'low';
     // get google api key to compute distance and duration
     this.getGoogleApi();
 
     // get drivers on page load
-    this.userService.getRidersForLocation1(this.location).subscribe(
-      drivers => this.drivers = this.getDistanceAndDuration(this.location, drivers));
+    this.userService
+      .getRidersForLocation1(this.location)
+      .subscribe(
+        (drivers) =>
+          (this.drivers = this.getDistanceAndDuration(this.location, drivers))
+      );
 
     // wait 2000ms for api call to return drivers
     // then add driver locations and route to map
     this.sleep(2000).then(() => {
       // set map properties
       this.mapProperties = {
-         center: new google.maps.LatLng(Number(sessionStorage.getItem('lat')), Number(sessionStorage.getItem('lng'))),
-         zoom: 15,
-         mapTypeId: google.maps.MapTypeId.ROADMAP
+        center: new google.maps.LatLng(
+          Number(sessionStorage.getItem('lat')),
+          Number(sessionStorage.getItem('lng'))
+        ),
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
       };
       // create map with specified properties
-      this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapProperties);
+      this.map = new google.maps.Map(
+        this.mapElement.nativeElement,
+        this.mapProperties
+      );
 
       // get all routes and show drivers on map
       this.showDriversOnMap(this.location, this.drivers);
     });
+  }
 
+  sort(sortColumn: string) {
+    this.changeSortOrder();
+    switch (sortColumn) {
+      case 'name': {
+        this.orderedBy = 'name';
+        this.sortByName();
+        break;
+      }
+      case 'distance': {
+        this.orderedBy = 'distance';
+        this.sortByDistance();
+        break;
+      }
+      case 'time': {
+        this.orderedBy = 'time';
+        this.sortByTime();
+        break;
+      }
+      default: {
+        return;
+      }
+    }
+  }
+
+  changeSortOrder() {
+    if (this.sortOrder === 'low') {
+      this.sortOrder = 'high';
+    } else {
+      this.sortOrder = 'low';
+    }
+  }
+
+  sortByName() {
+    this.drivers.sort((a, b) => {
+      const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      const orderIsLow = (this.sortOrder === 'low');
+      if (nameA < nameB) {
+        return (orderIsLow ? -1 : 1);
+      }
+      if (nameA > nameB) {
+        return (orderIsLow ? 1 : -1);
+      }
+      // names must be equal
+      return 0;
+    });
+  }
+
+  sortOrderIsLow(orderedBy: string): boolean {
+    if (this.orderedBy === orderedBy && this.sortOrder === 'low') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  sortByDistance() {
+    const orderIsLow = (this.sortOrder === 'low');
+    this.drivers.sort((a, b) => {
+      if (orderIsLow) {
+        return parseInt(a.distance) - parseInt(b.distance);
+      } else {
+        return parseInt(b.distance) - parseInt(a.distance);
+      }
+    });
+  }
+
+  sortByTime() {
+    const orderIsLow = (this.sortOrder === 'low');
+    this.drivers.sort((a, b) => {
+      if (orderIsLow) {
+        return this.getMinutes(a.duration) - this.getMinutes(b.duration);
+      } else {
+        return this.getMinutes(b.duration) - this.getMinutes(a.duration);
+      }
+    });
+  }
+
+  getMinutes(duration: string): number {
+    const matches = duration.match(/\d+/g);
+    const len = matches.length;
+    if (len === 1) {
+      return parseInt(matches[0]);
+    } else {
+      return parseInt(matches[0])*60 + parseInt(matches[1]);
+    }
   }
 
   /**
@@ -64,7 +166,7 @@ export class DriverListComponent implements OnInit {
    * @param ms the number of milliseconds
    */
   sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -72,20 +174,19 @@ export class DriverListComponent implements OnInit {
    * TO-DO
    */
   getGoogleApi() {
-      this.http.get(`${environment.loginUri}getGoogleApi`)
-        .subscribe(
-                  (response) => {
-                      if (response['googleMapAPIKey'] !== undefined) {
-                          new Promise((resolve) => {
-                            const script: HTMLScriptElement = document.createElement('script');
-                            script.addEventListener('load', () => resolve());
-                            script.src = `http://maps.googleapis.com/maps/api/js?key=${response['googleMapAPIKey'][0]}`;
-                            document.head.appendChild(script);
-                      });
-                }
-            }
-        );
-    }
+    this.http
+      .get(`${environment.loginUri}getGoogleApi`)
+      .subscribe((response) => {
+        if (response['googleMapAPIKey'] !== undefined) {
+          new Promise((resolve) => {
+            const script: HTMLScriptElement = document.createElement('script');
+            script.addEventListener('load', () => resolve());
+            script.src = `http://maps.googleapis.com/maps/api/js?key=${response['googleMapAPIKey'][0]}`;
+            document.head.appendChild(script);
+          });
+        }
+      });
+  }
 
   /**
    * showDriversOnMap
@@ -94,13 +195,18 @@ export class DriverListComponent implements OnInit {
    * @param drivers available drivers
    */
   showDriversOnMap(origin, drivers) {
-      drivers.forEach(element => {
+    drivers.forEach((element) => {
       const directionsService = new google.maps.DirectionsService();
       const directionsRenderer = new google.maps.DirectionsRenderer({
-          draggable: true,
-          map: this.map
-        });
-      this.displayRoute(origin, element.location, directionsService, directionsRenderer);
+        draggable: true,
+        map: this.map,
+      });
+      this.displayRoute(
+        origin,
+        element.location,
+        directionsService,
+        directionsRenderer
+      );
     });
   }
 
@@ -113,19 +219,22 @@ export class DriverListComponent implements OnInit {
    * @param display maps API directionsRenderer
    */
   displayRoute(origin, destination, service, display) {
-      service.route({
+    service.route(
+      {
         origin,
         destination,
         travelMode: 'DRIVING',
         // avoidTolls: true
-      }, (response, status) => {
+      },
+      (response, status) => {
         if (status === 'OK') {
           display.setDirections(response);
         } else {
           alert('Could not display directions due to: ' + status);
         }
-      });
-    }
+      }
+    );
+  }
 
   /**
    * addToModal responds to a click on a list item in the driver list
@@ -142,14 +251,14 @@ export class DriverListComponent implements OnInit {
   /**
    * addDrivers computes the distance and driving duration
    * between the current rider and each available driver.
-   * It then populates the drivers property with 
+   * It then populates the drivers property with
    * driver information and the computed distance and duration
    * for each driver
    * @param origin rider's location
    * @param drivers available drivers
    */
   getDistanceAndDuration(origin, drivers): Driver[] {
-    const  origins = [];
+    const origins = [];
     // set origin to rider's location
     origins.push(origin);
 
@@ -158,42 +267,45 @@ export class DriverListComponent implements OnInit {
     // drivers and add distance and duration
     const newDrivers: Driver[] = [];
 
-    drivers.forEach(element => {
-      const location = element.hAddress + ',' + element.hCity + ',' + element.hState;
+    drivers.forEach((element) => {
+      const location =
+        element.hAddress + ',' + element.hCity + ',' + element.hState;
       const service = new google.maps.DistanceMatrixService();
-      service.getDistanceMatrix({
-        origins,
-        destinations: [location],
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.IMPERIAL,
-        avoidHighways: false,
-        avoidTolls: false
-      }, (response, status) => {
-        if (status !== 'OK') {
-          console.log('Error was: ' + status);
-        } else {
-          const results = response.rows[0].elements;
-          const distance = results[0].distance.text;
-          const duration = results[0].duration.text;
-          const id = element.userId;
-          const name =  element.firstName + ' ' + element.lastName;
-          const email = element.email;
-          const phoneNumber = element.phoneNumber;
-          console.log('in here');
-          const newDriver = new Driver({
-            id,
-            name,
-            location,
-            email,
-            phoneNumber,
-            distance,
-            duration});
-          newDrivers.push(newDriver);
-      }
-    });
-
+      service.getDistanceMatrix(
+        {
+          origins,
+          destinations: [location],
+          travelMode: google.maps.TravelMode.DRIVING,
+          unitSystem: google.maps.UnitSystem.IMPERIAL,
+          avoidHighways: false,
+          avoidTolls: false,
+        },
+        (response, status) => {
+          if (status !== 'OK') {
+            console.log('Error was: ' + status);
+          } else {
+            const results = response.rows[0].elements;
+            const distance = results[0].distance.text;
+            const duration = results[0].duration.text;
+            const id = element.userId;
+            const name = element.firstName + ' ' + element.lastName;
+            const email = element.email;
+            const phoneNumber = element.phoneNumber;
+            console.log('in here');
+            const newDriver = new Driver({
+              id,
+              name,
+              location,
+              email,
+              phoneNumber,
+              distance,
+              duration,
+            });
+            newDrivers.push(newDriver);
+          }
+        }
+      );
     });
     return newDrivers;
   }
-
 }
