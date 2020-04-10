@@ -169,13 +169,13 @@ export class LoginComponent implements OnInit {
 					if ((response["name"] != undefined) && (response["userid"] != undefined)) {
 						sessionStorage.setItem("name", response["name"]);
 						sessionStorage.setItem("userid", response["userid"]);
-						sessionStorage.setItem("haddress", response["haddress"]);
 						sessionStorage.setItem("hcity", response["hcity"]);
+						sessionStorage.setItem("haddress", response["haddress"]);
 						sessionStorage.setItem("hstate", response["hstate"]);
 
 						//call landing page
 						//this.router.navigate(['landingPage']);
-						location.replace('landingPage');
+						location.replace('drivers');
 					}
 					if (response["userNotFound"] != undefined) {
 						this.userNotFound = response["userNotFound"][0];

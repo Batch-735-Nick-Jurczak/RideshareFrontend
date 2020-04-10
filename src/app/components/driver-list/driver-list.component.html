@@ -49,18 +49,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let driver of drivers">
+        <tr *ngFor="let driver of drivers | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
             <td>{{ driver.name }} </td>
             <td>{{ driver.distance }}</td>
             <td>{{ driver.duration }}</td>
             <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" (click)="addToModal(driver)">View</button></td>
           </tr>
         </tbody>
-        <!-- <tbody id="output"></tbody> -->
         <tfoot>
           <tr>
-            <ngb-pagination class="d-flex justify-content-center" [collectionSize]="5" [(page)]="page" [maxSize]="5"
-              [boundaryLinks]="true"></ngb-pagination>
+          <ngb-pagination class="d-flex justify-content-center" [collectionSize]="drivers.length" [(page)]="page"
+            [pageSize]="pageSize" [boundaryLinks]="true"></ngb-pagination>
           </tr>
         </tfoot>
        </table>
@@ -79,19 +78,6 @@
           <div class="container">
             <div id="driverDetails" class="table-responsive">
               <table id="driverDetailsTable" class="table table-boardered table-striped table-hover">
-                
-                  <!-- <tr id="driverDetailsHeaderRow" class="text-center">
-                      <th style="width: 25%" id="dsHeader">Name</th>
-                      <th style="width: 25%" id="dhHeader">Location</th>
-                      <th style="width: 25%"id="bHeader">Email</th>
-                      <th style="width: 25%"id="bHeader">Phone</th>
-                  </tr>
-                  <tr id="approvalStatusRow" class="text-center list-form">
-                    <td id="nameid">{{driverName}}</td>
-                    <td id="emailid">{{driverLocation}}</td>
-                    <td id="phoneid">{{driverEmail}}</td>
-                    <td id="phoneid">{{driverPhoneNumber}}</td>
-                  </tr> -->
                   <tr id="driverName" class="text-center list-form">
                     <td id="namehead">Name</td>
                     <td id="nameid">{{driverName}}</td>
@@ -127,5 +113,5 @@
         </div>
       </div>
     </div>
+  </div>
 </div>
-

@@ -26,12 +26,19 @@ export class DriverListComponent implements OnInit {
   /**
    * The current location of the user used to calculate the distance between drivers.
    */
-  location = 'Morgantown, WV';
+  location: string = sessionStorage.getItem("haddress") + " " +
+    sessionStorage.getItem("hcity") + "," + sessionStorage.getItem("hstate");
 
   /**
    * A list of map properties.
    */
   mapProperties: {};
+
+  /**
+   * The current pagesize for the number of items for 
+   * the  pagination of the driver table.
+   */
+  pageSize = 5;
 
   // Declare Google Map Variables
   @ViewChild('map', null)
@@ -86,42 +93,36 @@ export class DriverListComponent implements OnInit {
   /**
    * Initializer for the Driver-List Component.
    */
-  ngOnInit() {
-    // set default sort order
-    this.sortOrder = 'low';
+
+   ngOnInit() {
     // get google api key to compute distance and duration
     this.getGoogleApi();
 
-    // get drivers on page load
-    this.userService
-      .getRidersForLocation1(this.location)
-      .subscribe(
-        (drivers) =>
-          (this.drivers = this.getDistanceAndDuration(this.location, drivers))
-      );
+    // sleep for 1 second while the google 
+    // API key is grabbed and then initilize the drivers
+    this.sleep(1000).then(() => {
+      this.userService.getRidersForBatch(1).subscribe(
+        drivers => this.drivers = this.getDistanceAndDuration(this.location, drivers));
+    })
 
     // wait 2000ms for api call to return drivers
     // then add driver locations and route to map
     this.sleep(2000).then(() => {
       // set map properties
       this.mapProperties = {
-        center: new google.maps.LatLng(
-          Number(sessionStorage.getItem('lat')),
-          Number(sessionStorage.getItem('lng'))
-        ),
+        center: new google.maps.LatLng(Number(sessionStorage.getItem('lat')), Number(sessionStorage.getItem('lng'))),
         zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       // create map with specified properties
-      this.map = new google.maps.Map(
-        this.mapElement.nativeElement,
-        this.mapProperties
-      );
+      this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapProperties);
 
-      // get all routes and show drivers on map
+      // get all routes
+      // show drivers on map
       this.showDriversOnMap(this.location, this.drivers);
     });
   }
+
 
   /**
    * Calls a unique sorting method based off of the parameter given.
@@ -360,6 +361,8 @@ export class DriverListComponent implements OnInit {
         (response, status) => {
           if (status !== 'OK') {
             console.log('Error was: ' + status);
+          } else if (sessionStorage.getItem("userid") == element.userId) {
+
           } else {
             const results = response.rows[0].elements;
             const distance = results[0].distance.text;
