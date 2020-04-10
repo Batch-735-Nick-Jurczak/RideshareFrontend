@@ -69,7 +69,6 @@ export class UserService {
 		console.log(this.url)
 		return this.http.get<User>(this.url+idParam).toPromise();
 
-
 	}
 
 	 

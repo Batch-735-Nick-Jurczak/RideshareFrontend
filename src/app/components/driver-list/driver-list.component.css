@@ -20,3 +20,6 @@ table {
 table {
     width: 100%;
 }
+.timearrow {
+    display: inline-block;
+}
