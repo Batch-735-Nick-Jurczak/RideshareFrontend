@@ -1,3 +1,4 @@
+/// <reference types="@types/googlemaps" />
 import { Component, OnInit, ViewChild, SkipSelf } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/models/user';
@@ -17,45 +18,94 @@ import { Driver } from 'src/app/models/driver';
   templateUrl: './driver-list.component.html',
   styleUrls: ['./driver-list.component.css']
 })
+/**
+ * Component that displays the map and driver table.
+ */
 export class DriverListComponent implements OnInit {
 
-  location: string = sessionStorage.getItem("haddress") + " " + sessionStorage.getItem("hcity") + "," + sessionStorage.getItem("hstate");
+  // map properties
+  /**
+   * The current location of the user used to calculate the distance between drivers.
+   */
+  location: string = sessionStorage.getItem("haddress") + " " +
+    sessionStorage.getItem("hcity") + "," + sessionStorage.getItem("hstate");
 
+  /**
+   * The current page for the pagination of the driver table.
+   */
   page = 1;
-  pageSize = 5;
-  mapProperties: {};
-  availableCars: Array<any> = [];
-  drivers: Driver[] = [];
-  driverName: string;
-  driverOrigin: string;
 
+  /**
+   * The current pagesize for the number of items for 
+   * the  pagination of the driver table.
+   */
+  pageSize = 5;
+
+  /**
+  * A list of map properties.
+  */
+  mapProperties: {};
+
+  // list of drivers
+  /**
+   * The list of drivers loaded from the database to populate the table.
+   */
+  drivers: Driver[] = [];
+
+  // driver modal properties
+  /**
+   * The Driver's name for use in populating the Model with Driver's information.
+   */
+  driverName: string;
+
+  // Declare Google Map Variables
   @ViewChild('map', null)
   mapElement: any;
   map: google.maps.Map;
 
+  /**
+  * Constructor.
+  * @param HttpClient used to make http requests to the server.
+  * @param userService used to retrieve driver data.
+  */
   constructor(private http: HttpClient, private userService: UserService) { }
 
+  /**
+  * Initializer for the Driver-List Component.
+  */
   ngOnInit() {
+    // get google api key to compute distance and duration
     this.getGoogleApi();
+
+    // sleep for 1 second while the google 
+    // API key is grabbed and then initilize the drivers
     this.sleep(1000).then(() => {
       this.userService.getRidersForBatch(1).subscribe(
         drivers => this.drivers = this.getDistanceAndDuration(this.location, drivers));
     })
-    // this.getGoogleApi();
 
+    // wait 2000ms for api call to return drivers
+    // then add driver locations and route to map
     this.sleep(2000).then(() => {
+      // set map properties
       this.mapProperties = {
         center: new google.maps.LatLng(Number(sessionStorage.getItem('lat')), Number(sessionStorage.getItem('lng'))),
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
+      // create map with specified properties
       this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapProperties);
+
       // get all routes
       // show drivers on map
       this.showDriversOnMap(this.location, this.drivers);
     });
   }
 
+  /**
+     * Function which sets a timeout for a desired duration.
+     * @param ms the number of milliseconds
+     */
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -68,7 +118,6 @@ export class DriverListComponent implements OnInit {
     this.http.get(`${environment.loginUri}getGoogleApi`)
       .subscribe(
         (response) => {
-          // console.log(response);
           if (response["googleMapAPIKey"] !== undefined) {
             new Promise((resolve) => {
               const script: HTMLScriptElement = document.createElement('script');
@@ -80,12 +129,13 @@ export class DriverListComponent implements OnInit {
         }
       );
   }
-/**
-   * showDriversOnMap displays the pin for 
-   * the location of the driver on the Google Map
-   * @param origin
-   * @param drivers
-   */
+
+  /**
+  * showDriversOnMap a Function that renders 
+  * Driver pins and routes on the Google Map.
+  * @param origin rider's location
+  * @param drivers available drivers
+  */
   showDriversOnMap(origin, drivers) {
     drivers.forEach(element => {
       const directionsService = new google.maps.DirectionsService();
@@ -98,12 +148,11 @@ export class DriverListComponent implements OnInit {
   }
 
   /**
-   * displayRoute displays the route between the rider's location
-   * and each driver's location on the map
-   * @param origin
-   * @param destination
-   * @param service
-   * @param display
+   * displayRoute is a Function called from ShowDriversOnMap to render Driver Routes.
+   * @param origin rider's location
+   * @param destination driver's location
+   * @param service maps API directionsService
+   * @param display maps API directionsRenderer
    */
   displayRoute(origin, destination, service, display) {
     service.route({
@@ -127,7 +176,6 @@ export class DriverListComponent implements OnInit {
    */
   addToModal(driver: Driver) {
     this.driverName = driver.name;
-    this.driverOrigin = driver.origin;
   }
 
 
@@ -139,6 +187,7 @@ export class DriverListComponent implements OnInit {
    * for each driver
    * @param origin
    * @param drivers
+   * @returns Drivers[] list of drivers with distance and time added
    */
   getDistanceAndDuration(origin, drivers): Driver[] {
     const origins = [];
