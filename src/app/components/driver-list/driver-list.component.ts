@@ -1,3 +1,4 @@
+/// <reference types="@types/googlemaps" />
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { HttpClient } from '@angular/common/http';
@@ -9,33 +10,80 @@ import { Driver } from 'src/app/models/driver';
   templateUrl: './driver-list.component.html',
   styleUrls: ['./driver-list.component.css'],
 })
+
+/**
+ * Component that displays the map and driver table.
+ */
 export class DriverListComponent implements OnInit {
+  /**
+   * The current page for the pagination of the driver table.
+   */
   page = 1; // default page for pagination of driver table
 
   // map properties
+  /**
+   * The current location of the user used to calculate the distance between drivers.
+   */
   location = 'Morgantown, WV';
+
+  /**
+   * A list of map properties.
+   */
   mapProperties: {};
 
-  // list of drivers
-  drivers: Driver[] = [];
-
-  // driver modal properties
-  driverName: string;
-  driverLocation: string;
-  driverEmail: string;
-  driverPhoneNumber: string;
-
-  // set map properties
+  // Declare Google Map Variables
   @ViewChild('map', null)
   mapElement: any;
   map: google.maps.Map;
 
-  // set sort properties
-  sortOrder: string;
-  orderedBy: string;
+  // list of drivers
+  /**
+   * The list of drivers loaded from the database to populate the table.
+   */
+  drivers: Driver[] = [];
 
+  // driver modal properties
+  /**
+   * The Driver's name for use in populating the Model with Driver's information.
+   */
+  driverName: string;
+
+  /**
+   * The Driver's Address for use in populating the Model with Driver's information.
+   */
+  driverLocation: string;
+
+  /**
+   * The Driver's E-mail for use in populating the Model with Driver's information.
+   */
+  driverEmail: string;
+
+  /**
+   * The Driver's Phone Number for use in populating the Model with Driver's information.
+   */
+  driverPhoneNumber: string;
+
+  // set sort properties
+  /**
+   * Determines whether the table will sort in ascending or decending order.
+   */
+  sortOrder: string; // ascending or decending
+
+  /**
+   * Determines which column the table will sort by.
+   */
+  orderedBy: string; // which column
+
+  /**
+   * Constructor.
+   * @param HttpClient used to make http requests to the server.
+   * @param userService used to retrieve driver data.
+   */
   constructor(private http: HttpClient, private userService: UserService) {}
 
+  /**
+   * Initializer for the Driver-List Component.
+   */
   ngOnInit() {
     // set default sort order
     this.sortOrder = 'low';
@@ -73,9 +121,13 @@ export class DriverListComponent implements OnInit {
     });
   }
 
-  sort(sortColumn: string) {
+  /**
+   * Calls a unique sorting method based off of the parameter given.
+   * @param orderedBy which column to sort by.
+   */
+  sort(orderedBy: string) {
     this.changeSortOrder();
-    switch (sortColumn) {
+    switch (orderedBy) {
       case 'name': {
         this.orderedBy = 'name';
         this.sortByName();
@@ -97,6 +149,9 @@ export class DriverListComponent implements OnInit {
     }
   }
 
+  /**
+   * Toggles whether sorting in ascending or decending order.
+   */
   changeSortOrder() {
     if (this.sortOrder === 'low') {
       this.sortOrder = 'high';
@@ -105,6 +160,9 @@ export class DriverListComponent implements OnInit {
     }
   }
 
+  /**
+   * Function to print the driver table in order by name.
+   */
   sortByName() {
     this.drivers.sort((a, b) => {
       const nameA = a.name.toUpperCase(); // ignore upper and lowercase
@@ -121,6 +179,10 @@ export class DriverListComponent implements OnInit {
     });
   }
 
+  /**
+   * Function to return whether to sort in ascending or decending order.
+   * @param orderedBy the column to order by, clicked by user
+   */
   sortOrderIsLow(orderedBy: string): boolean {
     if (this.orderedBy === orderedBy && this.sortOrder === 'low') {
       return true;
@@ -129,6 +191,9 @@ export class DriverListComponent implements OnInit {
     }
   }
 
+  /**
+   * Function to print the driver table in order by Distance.
+   */
   sortByDistance() {
     const orderIsLow = (this.sortOrder === 'low');
     this.drivers.sort((a, b) => {
@@ -140,6 +205,9 @@ export class DriverListComponent implements OnInit {
     });
   }
 
+  /**
+   * Function to print the driver table in order by Time.
+   */
   sortByTime() {
     const orderIsLow = (this.sortOrder === 'low');
     this.drivers.sort((a, b) => {
@@ -151,6 +219,9 @@ export class DriverListComponent implements OnInit {
     });
   }
 
+  /**
+   * Function to return the number of minutes
+   */
   getMinutes(duration: string): number {
     const matches = duration.match(/\d+/g);
     const len = matches.length;
@@ -162,17 +233,13 @@ export class DriverListComponent implements OnInit {
   }
 
   /**
-   * sleep sets a timeout for a desired duration
+   * Function which sets a timeout for a desired duration.
    * @param ms the number of milliseconds
    */
   sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  /**
-   * getGoogleApi
-   * TO-DO
-   */
   getGoogleApi() {
     this.http
       .get(`${environment.loginUri}getGoogleApi`)
@@ -189,8 +256,7 @@ export class DriverListComponent implements OnInit {
   }
 
   /**
-   * showDriversOnMap
-   * TO-DO
+   * Function that renders Driver pins and routes on the Google Map.
    * @param origin rider's location
    * @param drivers available drivers
    */
@@ -198,7 +264,7 @@ export class DriverListComponent implements OnInit {
     drivers.forEach((element) => {
       const directionsService = new google.maps.DirectionsService();
       const directionsRenderer = new google.maps.DirectionsRenderer({
-        draggable: true,
+        draggable: false,
         map: this.map,
       });
       this.displayRoute(
@@ -211,8 +277,7 @@ export class DriverListComponent implements OnInit {
   }
 
   /**
-   * displayRoute
-   * TO-DO
+   * Function called from ShowDriversOnMap to render Driver Routes.
    * @param origin rider's location
    * @param destination driver's location
    * @param service maps API directionsService
@@ -249,7 +314,7 @@ export class DriverListComponent implements OnInit {
   }
 
   /**
-   * addDrivers computes the distance and driving duration
+   * getDistanceAndDuration computes the distance and driving duration
    * between the current rider and each available driver.
    * It then populates the drivers property with
    * driver information and the computed distance and duration

@@ -14,33 +14,33 @@
           <tr>
             <th scope="col" (click)="sort('name')">
               Name
-              <div *ngIf="sortOrderIsLow('name'); else second">
+              <div class="timearrow"*ngIf="sortOrderIsLow('name'); else second">
                 <i class="fa fa-arrow-up"></i>
               </div>
               <ng-template #second>
-                <div *ngIf="orderedBy==='name';">
+                <div class="timearrow" *ngIf="orderedBy==='name';">
                   <i class="fa fa-arrow-down"></i>
                 </div>
               </ng-template>
             </th>
             <th scope="col" (click)="sort('distance')">
               Distance
-              <div *ngIf="sortOrderIsLow('distance'); else second2">
+              <div class="timearrow" *ngIf="sortOrderIsLow('distance'); else second2">
                 <i class="fa fa-arrow-up"></i>
               </div>
               <ng-template #second2>
-                <div *ngIf="orderedBy==='distance';">
+                <div class="timearrow" *ngIf="orderedBy==='distance';">
                   <i class="fa fa-arrow-down"></i>
                 </div>
               </ng-template>
             </th>
             <th scope="col" (click)="sort('time')">
               Time
-              <div *ngIf="sortOrderIsLow('time'); else second3">
+              <div class="timearrow" *ngIf="sortOrderIsLow('time'); else second3">
                 <i class="fa fa-arrow-up"></i>
               </div>
               <ng-template #second3>
-                <div *ngIf="orderedBy==='time';">
+                <div class="timearrow" *ngIf="orderedBy==='time';">
                   <i class="fa fa-arrow-down"></i>
                 </div>
               </ng-template>
