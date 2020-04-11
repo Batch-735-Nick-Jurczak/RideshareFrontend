@@ -10,10 +10,11 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './src/**/*.e2e-spec.ts',
-    './test/landingpage.spec.js',
-    './test/register.spec.js',
-    './test/usernav.spec.js'
+    //'./src/**/*.e2e-spec.ts',
+    //'./test/landingpage.spec.js',
+    //'./test/register.spec.js',
+    //'./test/usernav.spec.js'
+    '../src/app/components/driver-list/driver-list.component.spec.ts'
   ],
   capabilities: {
     browserName: 'firefox'

@@ -101,7 +101,8 @@ export class DriverListComponent implements OnInit {
     // sleep for 1 second while the google 
     // API key is grabbed and then initilize the drivers
     this.sleep(1000).then(() => {
-      this.userService.getRidersForBatch(1).subscribe(
+      //this.userService.getRidersForBatch(1).subscribe(
+      this.userService.getRidersForLocation1(this.location).subscribe(
         drivers => this.drivers = this.getDistanceAndDuration(this.location, drivers));
     })
 
@@ -340,6 +341,9 @@ export class DriverListComponent implements OnInit {
    */
   getDistanceAndDuration(origin, drivers): Driver[] {
     const origins = [];
+    // set origin to rider's location
+    origins.push(origin);
+
     // initialize newDrivers to empty array
     // newDrivers will take information from
     // drivers and add distance and duration
@@ -347,7 +351,7 @@ export class DriverListComponent implements OnInit {
 
     drivers.forEach((element) => {
       const location =
-        element.hAddress + ',' + element.hCity + ',' + element.hState;
+        element.hAddress + ' ' + element.hCity + ',' + element.hState;
       const service = new google.maps.DistanceMatrixService();
       service.getDistanceMatrix(
         {
