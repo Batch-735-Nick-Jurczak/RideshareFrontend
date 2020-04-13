@@ -19,7 +19,7 @@ export class CarService {
 	 * An user is created.
 	 */
 
-    url: string = environment.carUri;
+    url: string = environment.carUri + "/";
 	user: User = new User();
 
 	/**
