@@ -1,5 +1,5 @@
 <a (click)="openModal(template)">Sign up</a >
-  
+
 <ng-template #template >
   <p *ngIf="success != ''" class="success">{{success}}</p>
   <div class="modal-header">
@@ -29,12 +29,13 @@
     <input (keydown)="userNameError = ''" id="userName" type="text" [(ngModel)]="user.userName" class="form-control" />
     <p *ngIf="userNameError != ''" class="error">{{userNameError}}</p>
 
-    <!--<label for="password">Password</label>
-    <input id="password" type="password" [(ngModel)]="password" class="form-control" />-->
+    <label for="password">Password</label>
+    <input id="password" type="password" [(ngModel)]="user.password" class="form-control" />
+    <p *ngIf="passwordError != ''" class="error">{{passwordError}}</p>
 
     <label id="state">Batch</label>
     <select class="form-control" [(ngModel)]="user.batch">
-          <option value="none" >  
+          <option value="none" >
           </option>
           <option *ngFor="let batch of batches" [ngValue]="batch">{{batch.batchNumber}} {{batch.batchLocation}}</option>
     </select>
@@ -49,7 +50,7 @@
 
     <label id="hState">State</label>
     <select (keydown)="hStateError = ''" class="form-control" [(ngModel)]="user.hState" id="hState" >
-            <option value="none" selected disabled hidden>  
+            <option value="none" selected disabled hidden>
             </option>
             <option *ngFor="let state of states" value="{{state}}">{{state}}</option>
     </select>
@@ -74,4 +75,4 @@
       <button type="submit" class="btn btn-primary register" (click)="submitUser()">Submit</button>
     </div>
   </div>
-</ng-template> 
+</ng-template>
