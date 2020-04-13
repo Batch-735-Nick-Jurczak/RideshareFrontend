@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
 	login() {
 		this.pwdError ='';
     this.usernameError= '';
-    let auth = !this.authService.login(this.userName, this.passWord);
+    let auth = this.authService.login(this.userName, this.passWord);
     console.log(auth);
     if(!auth){
       this.loginFailed();

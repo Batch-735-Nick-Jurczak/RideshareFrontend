@@ -1,10 +1,10 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { BsModalService, BsModalRef} from 'ngx-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { User } from 'src/app/models/user';
 import { Batch } from 'src/app/models/batch';
 import { BatchService } from 'src/app/services/batch-service/batch.service';
-import { ValidationService } from 'src/app/services/validation-service/validation.service';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 
 @Component({
   selector: 'signupmodal',
@@ -30,6 +30,7 @@ export class SignupModalComponent implements OnInit {
   emailError :string;
   phoneNumberError :string;
   userNameError :string;
+  passwordError :string;
   hAddressError :string;
   hStateError :string;
   hCityError :string;
@@ -37,31 +38,34 @@ export class SignupModalComponent implements OnInit {
 
   success :string;
   //Store the retrieved template from the 'openModal' method for future use cases.
-  modalRef :BsModalRef;
+  modalRef :NgbModalRef;
   states = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS',
             'KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY',
             'NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV',
             'WI','WY'];
-  constructor(private modalService :BsModalService, private userService :UserService, private batchService :BatchService, private validationService :ValidationService) { }
+  constructor(private modalService :NgbModal, private userService :UserService, private batchService :BatchService, private authService: AuthService) { }
 
   ngOnInit() {
 
-
-
-  // this.batchService.getAllBatchesByLocation1().subscribe(
-  //     res => {
-  //        this.batches = res;
-  //         },
-  //     );
+  this.batchService.getAllBatchesByLocation1().subscribe(
+      res => {
+         this.batches = res;
+          },
+      );
   }
   //Opens 'sign up' modal that takes in a template of type 'ng-template'.
 
   openModal(template :TemplateRef<any>){
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.open(template);
+  }
+
+  closeModal(){
+    this.modalRef.close();
   }
 
   submitUser() {
     this.user.userId = 0;
+    this.user.role = "USER"
     this.firstNameError = '';
     this.lastNameError = '';
     this.phoneNumberError ='';
@@ -114,6 +118,11 @@ export class SignupModalComponent implements OnInit {
           i = 1;
 
         }
+        if(res.password != undefined){
+          this.passwordError = res.password[0];
+          i = 1;
+
+        }
         if(res.hState != undefined){
           this.hStateError = res.hState[0];
           i = 1;
@@ -136,13 +145,10 @@ export class SignupModalComponent implements OnInit {
         }
         if(i === 0) {
           i = 0;
-          this.success = "Registered successfully!";
+          this.authService.login(this.user.userName, this.user.password);
+          this.closeModal();
         }
       }
-      /*res => {
-        console.log("failed to add user");
-        console.log(res);
-      }*/
     );
 
     }
