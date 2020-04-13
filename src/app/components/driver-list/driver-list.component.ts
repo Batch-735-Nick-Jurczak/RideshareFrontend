@@ -5,7 +5,7 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Driver } from 'src/app/models/driver';
+import { Driver } from '../../models/driver';
 
 @Component({
   selector: 'app-driver-list',
@@ -168,6 +168,8 @@ export class DriverListComponent implements OnInit {
    * Function to print the driver table in order by name.
    */
   sortByName() {
+    // This sort() is a built-in method in JavaScript.
+    // This is not to be confused with the sort() that was created in this component.
     this.drivers.sort((a, b) => {
       const nameA = a.name.toUpperCase(); // ignore upper and lowercase
       const nameB = b.name.toUpperCase(); // ignore upper and lowercase

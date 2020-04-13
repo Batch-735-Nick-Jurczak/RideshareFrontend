@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DriverListComponent } from './driver-list.component';
+import { mockDrivers, mockDriversSorted } from '../../models/driver-mocked';
+import { Driver } from '../../models/driver';
 
 /**
  * Test the efficacy of sorting algorithms in driver-list.component.ts
@@ -21,7 +23,10 @@ import { DriverListComponent } from './driver-list.component';
  * 
 */
 describe('Test Sorting Algorithms', () => {
-  let dlc: DriverListComponent;
+    let dlc:  DriverListComponent;
+    let driversExpected: Driver[];
+    let driversActual: Driver[];
+    let fixture: ComponentFixture<DriverListComponent>;
 
   /**
    * Mock the object to be sorted.
@@ -30,22 +35,27 @@ describe('Test Sorting Algorithms', () => {
 
   });
 
-  // let fixture: ComponentFixture<DriverListComponent>;
 
-  // beforeEach(async(() => {
-  //   TestBed.configureTestingModule({
-  //     declarations: [ DriverListComponent ]
-  //   })
-  //   .compileComponents();
-  // }));
 
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(DriverListComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
+  beforeEach(() => {
+    this.driversExpected = [...mockDriversSorted];
+    dlc.drivers = [...mockDrivers];
+    fixture = TestBed.createComponent(DriverListComponent);
+    dlc = fixture.componentInstance;
+    fixture.detectChanges();
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  });
+  
+
+
+
+  it('Sort By Name', () => {
+    //this.DriverListComponent.sortByName();
+    //this.dlc.sortByName();
+    spyOn(dlc, 'sortByName');
+
+    // Test
+    expect(dlc.drivers).toEqual(this.driversExpected);
+    //});
+  });
 });

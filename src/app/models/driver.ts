@@ -1,4 +1,4 @@
-interface DriverProps {
+export interface DriverProps {
     id: number;
     name: string;
     location: string;
