@@ -19,7 +19,7 @@ export class CarService {
    * An user is created.
    */
 
-  url: string = environment.carUri;
+  url: string = environment.carUri + "/";
   user: User = new User();
 
   /**
@@ -56,6 +56,10 @@ export class CarService {
     return this.http.get<Car>(`${this.url}users/${userId}`);
   }
 
+  getCarByUsername(username: string): Observable<Car> {
+    return this.http.get<Car>(`${this.url}users/${username}`);
+  }
+
   updateCarInfo(car: Car) {
     //console.log(user);
     return this.http.put(this.url, car).toPromise();
@@ -67,14 +71,15 @@ export class CarService {
    * @param userId
    */
 
-  createCar(car, userId) {
-    this.user.userId = userId;
+  createCar(car, username) {
+
+    this.user = this.userService.getUserByUsername(username);
     car.user = this.user;
 
     this.http.post(this.url, car, { observe: "response" }).subscribe(
       response => {
         if (response) {
-          this.userService.updateIsDriver(true, userId);
+          this.userService.updateIsDriver(true, this.user.userId);
           this.router.navigate(["car"]);
         }
       },

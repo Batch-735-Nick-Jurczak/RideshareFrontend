@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { CarService } from "src/app/services/car-service/car.service";
 import { ValidationService } from "src/app/services/validation-service/validation.service";
 import { Car } from "src/app/models/car";
+import * as jwt from "jwt-decode"
 
 @Component({
   selector: "app-car-register",
@@ -20,7 +21,7 @@ export class CarRegisterComponent implements OnInit {
    */
 
   years: number[] = [];
-  userId: number;
+  username: number;
   car: Car = new Car();
 
   /**
@@ -44,6 +45,9 @@ export class CarRegisterComponent implements OnInit {
       this.years.push(i);
       this.car.year = this.years[0];
     }
+
+    let token = jwt(localStorage.getItem("id_token"));
+    this.username = token.sub;
   }
 
   /**
@@ -57,12 +61,12 @@ export class CarRegisterComponent implements OnInit {
   }
 
   /**
-   * Validates the number of seats as well and sends the info to
+   * Validates the number of seats and sends the info to
    * the car service so the data can be persisted
    */
   addCar() {
     if (this.validationService.validateSeats(this.car.seats)) {
-      this.carService.createCar(this.car, this.userId);
+      this.carService.createCar(this.car, this.username);
     }
   }
 }
