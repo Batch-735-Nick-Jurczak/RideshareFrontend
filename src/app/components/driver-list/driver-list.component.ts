@@ -224,6 +224,7 @@ export class DriverListComponent implements OnInit {
       }
     });
   }
+
   /**
    * Function to return the number of minutes
    */
@@ -245,6 +246,11 @@ export class DriverListComponent implements OnInit {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+
+  /**
+   * getGoogleApi gets the API key 
+   * to be able to leverage the Google API
+   */
   getGoogleApi() {
     this.http
       .get(`${environment.loginUri}getGoogleApi`)
@@ -280,18 +286,6 @@ export class DriverListComponent implements OnInit {
       );
     });
   }
-// showDriversOnMap(origin, drivers) {
-//   console.log("Origin: " + origin);
-//   console.log(drivers);
-//   drivers.forEach(element => {
-//     var directionsService = new google.maps.DirectionsService;
-//     var directionsRenderer = new google.maps.DirectionsRenderer({
-//       draggable: true,
-//       map: this.map
-//     });
-//     this.displayRoute(origin, element.origin, directionsService, directionsRenderer);
-//   });
-// }
 
   /**
    * Function called from ShowDriversOnMap to render Driver Routes.
@@ -375,7 +369,6 @@ export class DriverListComponent implements OnInit {
             const name = element.firstName + ' ' + element.lastName;
             const email = element.email;
             const phoneNumber = element.phoneNumber;
-            console.log('in here');
             const newDriver = new Driver({
               id,
               name,
