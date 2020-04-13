@@ -4,6 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Admin } from "src/app/models/admin";
 import * as moment from "moment";
+import * as jwt from "jwt-decode";
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: "root",
@@ -22,7 +24,7 @@ export class AuthService {
    * The url that we will be sending our posts to.
    */
 
-  url = "http://localhost:8080/login";
+  url = environment.authUri;
 
   /**
    * This is the constructor
@@ -43,22 +45,29 @@ export class AuthService {
    * @param user
    */
 
-  login(user: User) {
+  login(userName: string, password: string) {
+    let user = {username: userName, password: password};
     this.http.post<User>(this.url, user).subscribe((res) => {
-      this.setSession;
 
       if (res) {
-        if (res.isDriver) {
+        this.setSession(res);
+
+        if (res.driver) {
           this.router.navigate(["/home/riders"]);
+          return true;
         } else {
           this.router.navigate(["/home/drivers"]);
+          return true;
         }
       } else {
         return false;
       }
       // TODO: Figure out ngrx
-      this.fireIsLoggedIn.emit(this.user);
+      // this.fireIsLoggedIn.emit(res);
+
     });
+
+    return true;
   }
 
   /**
@@ -66,9 +75,13 @@ export class AuthService {
    */
 
   private setSession(authResult) {
-    const expiresAt = moment().add(authResult.expiresIn, "second");
 
-    localStorage.setItem("id_token", authResult.idToken);
+    let token = jwt(authResult.token);
+
+    const expiresAt = moment().add(token.exp);
+    console.log(expiresAt, " This is the expitration");
+
+    localStorage.setItem("id_token", authResult.token);
     localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
   }
 

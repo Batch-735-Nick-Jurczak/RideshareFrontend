@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import * as jwt from "jwt-decode";
 
 
 
@@ -21,22 +22,23 @@ export class DriverComponent implements OnInit {
   userDriver : User ;
 
   riders: User[];
-  location = '';   
-   
+  location = '';
+
   /**
-   * Constructor 
+   * Constructor
    * @param userService An user service is instantiated.
    * @param router Provides an instance of a router.
    * @param authService An auth service is injected.
    */
 
-  
+
   constructor(private userService: UserService, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
-    let userId = this.authService.user.userId;
-    if (userId) {
-      this.userService.getDriverById(userId).
+
+    let token = jwt(localStorage.getItem("id_token"));
+    let userId = "/" + token.sub;
+      this.userService.getUserByUserName(userId).
         subscribe(
           data => {
             this.userDriver = data;
@@ -47,27 +49,25 @@ export class DriverComponent implements OnInit {
                 this.riders = data;
               });
           })
-        }
-      else {
-        this.router.navigate(['']);
-      }
+
+
     }
 
   /**
    * A PUT method that changes accepting ride status
-   * @param userdriver 
+   * @param userdriver
    */
 
     changeAcceptingRides(userdriver){
        if(userdriver.acceptingRides == true){
         userdriver.acceptingRides = false;
       this.userService.updateUserInfo(this.userDriver);
-      
+
     }
     else {
       userdriver.acceptingRides = true;
       this.userService.updateUserInfo(this.userDriver);
-            
+
     }
   }
 
