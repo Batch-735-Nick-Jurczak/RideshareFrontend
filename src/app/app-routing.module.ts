@@ -20,6 +20,7 @@ import { DriverContactModalComponent } from './components/driver-contact-modal/d
 import { DriverListComponent } from './components/driver-list/driver-list.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { AuthGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
