@@ -39,7 +39,6 @@ export class ProfileContactComponent implements OnInit {
     this.userService
       .getUserById2(sessionStorage.getItem("userid"))
       .subscribe((response) => {
-        console.log(response)
         /**
          *setting the current user to the local user profile
          */
@@ -77,9 +76,6 @@ export class ProfileContactComponent implements OnInit {
    * @param results are the results from the error log
    */
   displayResults(results) {
-    console.log(results);
-    console.log(results[0].field);
-    console.log(results.length);
     /**
      * holds fthe value of the response to be given to the user.
      */
