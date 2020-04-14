@@ -9,7 +9,7 @@ if (environment.production) {
   enableProdMode();
 }else{
   const script = document.createElement('script');
-   script.src = `https://maps.googleapis.com/maps/api/js?key=`
+   script.src = `https://maps.googleapis.com/maps/api/js?key=asdfadasfdfasdfasdfeve`
    document.head.appendChild(script);
 }
 
