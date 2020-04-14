@@ -49,11 +49,12 @@ export class ProfileCarComponent implements OnInit {
 
     this.userService.getUserByUserName(token.sub).subscribe((response) => {
       this.currentUser = response;
-
+      console.log(this.currentUser);
       this.carService
         .getCarByUserId2(this.currentUser.userId.toString())
         .subscribe((response) => {
           this.currentCar = response;
+          console.log(this.currentCar)
           this.make.setValue(response.make ? response.make : "No Car Entered");
           this.model.setValue(response.model ? response.model : "No Car Entered");
           this.seats.setValue(response.seats);
@@ -80,10 +81,11 @@ export class ProfileCarComponent implements OnInit {
    * This updates the users car information (currently not working) to the web server.
    */
   updatesCarInfo() {
-    this.currentCar.make = this.make;
-    this.currentCar.model = this.model;
-    this.currentCar.seats = this.seats;
-    this.carService.updateCarInfo(this.currentCar);
+    this.currentCar.make = this.make.value;
+    this.currentCar.model = this.model.value;
+    this.currentCar.seats = this.seats.value;
+    console.log(this.currentCar)
+    this.carService.updateCarInfo(this.currentCar,this.currentCar.carId).catch(d=>console.log(d));
     this.success = "Updated Successfully!";
   }
 }

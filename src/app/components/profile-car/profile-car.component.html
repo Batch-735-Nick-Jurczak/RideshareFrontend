@@ -7,7 +7,7 @@
       <div class="col-sm-1"></div>
       <label for="make" class="col-sm-4 col-form-label">Make:</label>
       <div class="col-sm-4">
-        <input type="text" formControlName="make" id="make" required class = "form-control"/>
+        <input type="text" minlength="3" maxlength="25" formControlName="make" id="make" required class = "form-control"/>
         <div *ngIf = "make.invalid && make.touched" class = "alert alert-danger"> Make Is Required!
         </div>
       </div>
@@ -17,7 +17,7 @@
       <div class="col-sm-1"></div>
       <label for="model" class="col-sm-4 col-form-label">Model:</label>
       <div class="col-sm-4">
-        <input type="text" formControlName="model" id="model" required class = "form-control" />
+        <input type="text" minlength="3" maxlength="25" formControlName="model" id="model" required class = "form-control" />
         <div *ngIf = "model.invalid && make.touched" class = "alert alert-danger"> Model Is Required!
         </div>
       </div>

@@ -52,9 +52,9 @@ export class CarService {
 		return this.http.get<Car>(`${this.url}users/${userId}`);
 	}
 
-	updateCarInfo(car: Car) {
+	updateCarInfo(car: Car,id:number) {
 		//console.log(user);
-		return this.http.put(this.url, car).toPromise();
+		return this.http.put(this.url+id, car).toPromise();
 	}
 
 
