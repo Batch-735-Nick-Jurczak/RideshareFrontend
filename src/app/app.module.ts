@@ -38,6 +38,7 @@ import { UserRegisterComponent } from './components/user-register/user-register.
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
 import { httpInterceptorProviders  } from "./http-interceptors/index";
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 
 
 
@@ -80,6 +81,7 @@ import { httpInterceptorProviders  } from "./http-interceptors/index";
     ModalModule.forRoot(),
     NgbModule,
     ReactiveFormsModule,
+    GooglePlaceModule
   ],
   providers: [
     UserService,
