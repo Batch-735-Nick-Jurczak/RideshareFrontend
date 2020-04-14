@@ -10,29 +10,58 @@ import { analyzeAndValidateNgModules } from "@angular/compiler";
   styleUrls: ["./profile-contact.component.css"],
 })
 export class ProfileContactComponent implements OnInit {
+ 
+  /**
+   *Created a user to hold the current user information comming from 
+   *database
+   */
   profileObject: User;
-  currentUser: any = "";
+  /**
+   *Create variables to hold the information in the form
+   * 
+   */
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  success: string;
+
   constructor(private router: Router, private userService: UserService) {}
 
+  /**
+   *Variable to hold the success or fail status that will be recieved from the database
+   */
+  success: string;
+
   ngOnInit() {
-    this.currentUser = this.userService
+    /**
+     *calling the user service to get the current users information
+     */
+    this.userService
       .getUserById2(sessionStorage.getItem("userid"))
       .subscribe((response) => {
+        console.log(response)
+        /**
+         *setting the current user to the local user profile
+         */
         this.profileObject = response;
-
+        /**
+         *Setting the current logged in users info to the form information via ngModel.
+         */
         this.firstName = this.profileObject.firstName;
         this.lastName = this.profileObject.lastName;
         this.email = this.profileObject.email;
         this.phone = this.profileObject.phoneNumber;
       });
   }
+  /**
+   *Function that will submit the updated changes to the database
+   */
+  updatesContactInfo({ value, valid }: { value: User; valid: Boolean }) {
 
-  updatesContactInfo() {
+
+    /**
+     * Updating the current users information with the information from the form.
+     */
     this.profileObject.firstName = this.firstName;
     this.profileObject.lastName = this.lastName;
     this.profileObject.email = this.email;
@@ -42,15 +71,21 @@ export class ProfileContactComponent implements OnInit {
       .updateUserInfo(this.profileObject)
       .catch((d) => this.displayResults(d.error.errors));
   }
+
+  /**
+   * The displayResults function is used to display the error validations from the backend. 
+   * @param results are the results from the error log
+   */
   displayResults(results) {
     console.log(results);
     console.log(results[0].field);
     console.log(results.length);
+    /**
+     * holds fthe value of the response to be given to the user.
+     */
     let respon = "";
     if (results.length ==1 ) {
-     
       switch(results[0].field.toString()){
-        
         case "email":
           this.success = "Invalid Email was given!";
          break;
