@@ -170,6 +170,7 @@ export class DriverListComponent implements OnInit {
   sortByName() {
     // This sort() is a built-in method in JavaScript.
     // This is not to be confused with the sort() that was created in this component.
+    this.sleep(120*1000);
     this.drivers.sort((a, b) => {
       const nameA = a.name.toUpperCase(); // ignore upper and lowercase
       const nameB = b.name.toUpperCase(); // ignore upper and lowercase

@@ -1,0 +1,85 @@
+import 'zone.js';
+import 'zone.js/dist/async-test.js';
+import 'zone.js/dist/proxy.js';
+import 'zone.js/dist/sync-test';
+import 'zone.js/dist/jasmine-patch';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { DriverListComponent } from './driver-list.component';
+import { mockDrivers, mockDriversSorted } from '../../models/driver-mocked';
+import { Driver } from '../../models/driver';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+// import { SelectMultipleControlValueAccessor } from '@angular/forms';
+
+/**
+ * Test the efficacy of sorting algorithms in driver-list.component.ts
+ * List of algorithms that are tested:
+ * sort(orderedBy: string): void; uses:
+ *    changeSortOrder();
+ *    sortByName(): void;
+ *    sortByDistance(): void;
+ *    sortByTime(): void; uses:
+ *      getMinutes(duration: string): number;
+ *    sortOrderIsLow(orderedBy: string): boolean;
+ * sleep(ms): Promise; //used by many functions
+ * getGoogleApi(): void;  Unable to test because async()'s dependency called Zone cannot be detected by Protractor
+ * addToModal(driver: Driver);
+ * getDistanceAndDuration(origin, drivers): Driver[];
+ * 
+ * 
+ * 
+*/
+describe('Test Sorting Algorithms', () => {
+  let dlc: DriverListComponent;
+  let driversExpected: Driver[] = [];
+  //let driversActual: Driver[];
+  let fixture: ComponentFixture<DriverListComponent>;
+  //let dlc = DriverListComponent;
+
+  /**
+   * Mock the object to be sorted.
+  */
+
+  beforeAll(() => {
+
+  });
+
+  beforeEach(() => {
+    this.driversExpected = [...mockDriversSorted];
+    TestBed.resetTestEnvironment();
+    TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+    this.fixture = TestBed.createComponent(DriverListComponent);
+    this.fixture.detectChanges();
+    this.dlc = fixture.componentInstance;
+    this.dlc.drivers = [...mockDrivers];
+  });
+  
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ DriverListComponent ]
+    })
+    .compileComponents();
+  }));
+
+
+  // it('should create', () => {
+  //   expect(dlc).toBeTruthy();
+  // });
+
+  it('Sort By Name', () => {
+    const fixture = TestBed.createComponent(DriverListComponent);
+    const dlc = fixture.debugElement.componentInstance;
+    //browser.pause();
+    dlc.sortOrder = 'low';
+    dlc.orderedBy = 'name';
+    //this.DriverListComponent.sortByName();
+    dlc.sortByName();
+    //spyOn(this.dlc, 'sortByName');
+    //this.dlc.sortByName;
+    // Test
+    //setTimeout(function() {}, 120*1000);
+    expect(dlc.drivers).toEqual(this.driversExpected);
+    // setTimeout(() => {
+    // }, 120*1000);
+    //});
+  });
+});

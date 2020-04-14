@@ -38,6 +38,8 @@ import { UserRegisterComponent } from './components/user-register/user-register.
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
 import { SortableDirective } from './directives/sortable.directive';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import { TestComponent } from './components/test/test.component';
 
 @NgModule({
   declarations: [
@@ -66,17 +68,18 @@ import { SortableDirective } from './directives/sortable.directive';
     UserRegisterComponent,
     HomePageComponent,
     BsNavbarComponent,
-    SortableDirective
+    SortableDirective,
+    TestComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    BrowserModule,
     AppRoutingModule,
     FormsModule,
     ModalModule.forRoot(),
-    NgbModule
+    NgbModule,
+    BrowserDynamicTestingModule
   ],
   providers: [
     UserService,

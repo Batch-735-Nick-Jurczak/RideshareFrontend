@@ -99,7 +99,7 @@ describe('CarService', () => {
             }  
         ];
         let response;
-        spyOn(carService, 'getAllCars').and.returnValue(of(carsResponse));
+        //spyOn(carService, 'getAllCars').and.returnValue(of(carsResponse));
   
         carService.getAllCars().subscribe(res => {
           response = res;
