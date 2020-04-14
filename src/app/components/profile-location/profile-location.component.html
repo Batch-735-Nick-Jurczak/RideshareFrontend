@@ -3,7 +3,7 @@
     <i class="fa fa-home" style="font-family:'FontAwesome';"></i>
        
         <h4>Location:</h4>
-       
+       <form >
         <div class="form-group row">
             <div class="col-sm-1"></div>
                 <label for="address" class="col-sm-4 col-form-label">Address:</label>
@@ -11,10 +11,14 @@
                     <input ngx-google-places-autocomplete
                      [options]='options' 
                      #placesRef="ngx-places" 
+                     [(ngModel)]=address
                      (onAddressChange)="setFields($event)"
+                     [ngClass]="{'is-invalid':userAddress.errors && userAddress.touched}"
                      class="form-control" 
+                     name="userAddress"
+                     #userAddress="ngModel"
                      required/>
-
+                     <div class="invalid-feedback"[hidden]="!userAddress.errors?.required"> Address ss Requried</div>
                 </div>
         </div>
         
@@ -27,6 +31,7 @@
                 type="text" 
                 class="form-control" 
                 id="address2"
+                name="userAddress2"
                 >
             </div>
         </div>
@@ -41,6 +46,7 @@
                     type="text" 
                     class="form-control" 
                     id="city"
+                    name="city"
                     disabled>
                 </div>
         </div>
@@ -114,11 +120,13 @@
                         type="text" 
                         class="form-control" 
                         id="zipcode"
+                        name="zipcode"
                         disabled>
                         <p *ngIf="success != ''" class="success">{{success}}</p>
+                        <p *ngIf="fali != ''" class="danger">{{fail}}</p>
                     </div>
             </div>
         
-        <button type="submit" [disabled]="!placesRef" class="btn btn-primary myBtn" (click)="updatesContactInfo()">Save</button>
-
+        <button type="submit" [disabled]="!userAddress.valid" class="btn btn-primary myBtn" (click)="updatesContactInfo()">Save</button>
+    </form>
     </div>
