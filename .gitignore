@@ -42,7 +42,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-src/main.ts
+**/src/main.ts
 
 # System Files
 .DS_Store
