@@ -45,13 +45,15 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
 
-    if(sessionStorage.getItem("userid") != null){
+    let userId = Number.parseInt(sessionStorage.getItem("user_id"));
+
+    if(userId != null){
       this.currentUser =sessionStorage.getItem("name");
     }else{
       this.currentUser ='';
     }
-    if (this.authService.user.userId) {
-      this.userService.getUserById(this.authService.user.userId).then((response)=>{
+    if (this.authService.isLoggedIn()) {
+      this.userService.getUserById(userId).then((response)=>{
         this.name = response.firstName;
       })
     }
@@ -70,23 +72,19 @@ export class NavbarComponent implements OnInit {
   }
 
    /**
-   * Function that takes no parameters. 
+   * Function that takes no parameters.
    * It will clear the sesssion storage.
-   * @return {void} 
-   * 
+   * @return {void}
+   *
    */
 
-   
+
   logout() {
-    this.authService.user = {};
-    this.authService.admin = new Admin();
     //clear all session
     this.name = '';
     this.admin = '';
     this.currentUser = '';
-    sessionStorage.removeItem("name");
-    sessionStorage.removeItem("userid");
-    //sessionStorage.clear(); 
+    this.authService.logout();
     this.router.navigate(['']);
   }
 

@@ -36,9 +36,9 @@ export class DriverComponent implements OnInit {
 
   ngOnInit() {
 
-    let token = jwt(localStorage.getItem("id_token"));
-    let userId = "/" + token.sub;
-      this.userService.getUserByUserName(userId).
+    let token = jwt(sessionStorage.getItem("id_token"));
+    let username = token.sub;
+      this.userService.getUserByUserName(username).
         subscribe(
           data => {
             this.userDriver = data;

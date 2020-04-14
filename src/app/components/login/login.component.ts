@@ -1,6 +1,6 @@
 import { Component, OnInit, NgModule, TemplateRef } from '@angular/core';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
-import { BsModalService, BsModalRef} from 'ngx-bootstrap';
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
 	selector: 'app-login',
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
 	pwdError: string;
   usernameError: string;
 	userNotFound: string;
-  modalRef :BsModalRef;
+  modalRef :NgbModalRef;
 
 	/**
 	 * This is a constructor
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 	 * @param authService An auth service is injected.
 	 *
 	 */
-	constructor(private modalService :BsModalService,private authService: AuthService) { }
+	constructor(private modalService :NgbModal,private authService: AuthService) { }
 
 	ngOnInit() {
 	}
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	openModal(template :TemplateRef<any>){
-		this.modalRef = this.modalService.show(template);
+		this.modalRef = this.modalService.open(template);
   }
 
 
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
     if(!auth){
       this.loginFailed();
     }else {
-      this.modalService.hide(0);
+      this.modalRef.close();
     }
 
 	}

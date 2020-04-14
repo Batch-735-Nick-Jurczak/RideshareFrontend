@@ -21,7 +21,7 @@ export class CarRegisterComponent implements OnInit {
    */
 
   years: number[] = [];
-  username: number;
+  userId: number;
   car: Car = new Car();
 
   /**
@@ -46,8 +46,8 @@ export class CarRegisterComponent implements OnInit {
       this.car.year = this.years[0];
     }
 
-    let token = jwt(localStorage.getItem("id_token"));
-    this.username = token.sub;
+
+    this.userId = Number.parseInt(sessionStorage.getItem("user_id"));
   }
 
   /**
@@ -66,7 +66,7 @@ export class CarRegisterComponent implements OnInit {
    */
   addCar() {
     if (this.validationService.validateSeats(this.car.seats)) {
-      this.carService.createCar(this.car, this.username);
+      this.carService.createCar(this.car, this.userId);
     }
   }
 }
