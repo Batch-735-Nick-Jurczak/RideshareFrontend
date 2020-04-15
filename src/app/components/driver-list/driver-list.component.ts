@@ -337,19 +337,19 @@ export class DriverListComponent implements OnInit {
    * @param drivers available drivers
    */
   getDistanceAndDuration(origin, drivers): Driver[] {
-    const origins = [];
+    let origins = [];
     // set origin to rider's location
     origins.push(origin);
 
     // initialize newDrivers to empty array
     // newDrivers will take information from
     // drivers and add distance and duration
-    const newDrivers: Driver[] = [];
+    let newDrivers: Driver[] = [];
 
     drivers.forEach((element) => {
-      const location =
+      let location =
         element.hAddress + ' ' + element.hCity + ',' + element.hState;
-      const service = new google.maps.DistanceMatrixService();
+      let service = new google.maps.DistanceMatrixService();
       service.getDistanceMatrix(
         {
           origins,
@@ -365,14 +365,14 @@ export class DriverListComponent implements OnInit {
           } else if (sessionStorage.getItem("userid") == element.userId) {
 
           } else {
-            const results = response.rows[0].elements;
-            const distance = results[0].distance.text;
-            const duration = results[0].duration.text;
-            const id = element.userId;
-            const name = element.firstName + ' ' + element.lastName;
-            const email = element.email;
-            const phoneNumber = element.phoneNumber;
-            const newDriver = new Driver({
+            let results = response.rows[0].elements;
+            let distance = results[0].distance.text;
+            let duration = results[0].duration.text;
+            let id = element.userId;
+            let name = element.firstName + ' ' + element.lastName;
+            let email = element.email;
+            let phoneNumber = element.phoneNumber;
+            let newDriver = new Driver({
               id,
               name,
               location,
