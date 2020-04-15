@@ -31,4 +31,5 @@ export const mockDriverProps3: DriverProps = {
 };
 
 export const mockDrivers: Driver[] = [ new Driver(mockDriverProps1), new Driver(mockDriverProps2), new Driver(mockDriverProps3) ];
-export const mockDriversSorted: Driver[] = [ new Driver(mockDriverProps2), new Driver(mockDriverProps3), new Driver(mockDriverProps1) ];
+export const mockDriversAscending: Driver[] = [ new Driver(mockDriverProps2), new Driver(mockDriverProps3), new Driver(mockDriverProps1) ];
+export const mockDriversDescending: Driver[] = [ new Driver(mockDriverProps1), new Driver(mockDriverProps3), new Driver(mockDriverProps2) ];

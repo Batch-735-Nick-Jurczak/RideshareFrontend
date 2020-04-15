@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DriverListComponent } from './driver-list.component';
 import { AppModule } from '../../app.module';
 import { Driver } from '../../models/driver';
-import { mockDrivers, mockDriversSorted } from '../../models/driver-mocked';
+import { mockDrivers, mockDriversAscending, mockDriversDescending } from '../../models/driver-mocked';
 
 /**
  * Test the efficacy of sorting algorithms in driver-list.component.ts
@@ -24,7 +24,10 @@ import { mockDrivers, mockDriversSorted } from '../../models/driver-mocked';
  * 
 */
 
-describe('DriverListComponent', () => {
+/**
+ * SortByName()
+ */
+describe('Sort By Name', () => {
   let component: DriverListComponent;
   let fixture: ComponentFixture<DriverListComponent>;
   let driversExpected: Driver[] = [];
@@ -37,22 +40,105 @@ describe('DriverListComponent', () => {
   }));
 
   beforeEach(() => {
-    driversExpected = [...mockDriversSorted];
     fixture = TestBed.createComponent(DriverListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     component.drivers = [...mockDrivers];
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 
-  fit('Sort By Name', () => {
+  it('Ascending', () => {
+    driversExpected = [...mockDriversAscending];
     component.sortOrder = 'low';
     component.orderedBy = 'name';
     component.sortByName();
-    //spyOn(this.dlc, 'sortByName');
+    //spyOn(component, 'sortByName');
+    expect(component.drivers).toEqual(driversExpected);
+    });
+
+  it('Descending', () => {
+    driversExpected = [...mockDriversDescending];
+    component.sortOrder = 'high';
+    component.orderedBy = 'name';
+    component.sortByName();
+    expect(component.drivers).toEqual(driversExpected);
+    });
+});
+
+/**
+ * SortByTime()
+ */
+describe('Sort By Time', () => {
+  let component: DriverListComponent;
+  let fixture: ComponentFixture<DriverListComponent>;
+  let driversExpected: Driver[] = [];
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ AppModule ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DriverListComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    component.drivers = [...mockDrivers];
+  });
+
+  it('Ascending', () => {
+    driversExpected = [...mockDriversAscending];
+    component.sortOrder = 'low';
+    component.orderedBy = 'time';
+    component.sortByName();
+    expect(component.drivers).toEqual(driversExpected);
+    });
+
+  it('Descending', () => {
+    driversExpected = [...mockDriversDescending];
+    component.sortOrder = 'high';
+    component.orderedBy = 'time';
+    component.sortByName();
+    expect(component.drivers).toEqual(driversExpected);
+    });
+});
+
+/**
+ * SortByDistance()
+ */
+describe('Sort By Distance', () => {
+  let component: DriverListComponent;
+  let fixture: ComponentFixture<DriverListComponent>;
+  let driversExpected: Driver[] = [];
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ AppModule ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DriverListComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    component.drivers = [...mockDrivers];
+  });
+
+  it('Ascending', () => {
+    driversExpected = [...mockDriversAscending];
+    component.sortOrder = 'low';
+    component.orderedBy = 'distance';
+    component.sortByName();
+    expect(component.drivers).toEqual(driversExpected);
+    });
+
+  it('Descending', () => {
+    driversExpected = [...mockDriversDescending];
+    component.sortOrder = 'high';
+    component.orderedBy = 'distance';
+    component.sortByName();
     expect(component.drivers).toEqual(driversExpected);
     });
 });
