@@ -6,6 +6,7 @@ import { Admin } from "src/app/models/admin";
 import * as moment from "moment";
 import * as jwt from "jwt-decode";
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: "root",
@@ -45,7 +46,7 @@ export class AuthService {
    * @param user
    */
 
-  login(userName: string, password: string) {
+  login(userName: string, password: string): Observable <User> {
     let user = {username: userName, password: password};
     this.http.post<User>(this.url, user).subscribe((res) => {
 
@@ -54,20 +55,20 @@ export class AuthService {
 
         if (res.driver) {
           this.router.navigate(["/home/riders"]);
-          return true;
+          return res;
         } else {
           this.router.navigate(["/home/drivers"]);
-          return true;
+          return res;
         }
       } else {
-        return false;
+        return null;
       }
       // TODO: Figure out ngrx
       // this.fireIsLoggedIn.emit(res);
 
     });
 
-    return true;
+    return null;
   }
 
   /**
