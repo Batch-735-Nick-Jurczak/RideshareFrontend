@@ -25,41 +25,41 @@ export class LoginUserAction implements Action {
   }
   export class LoginUserSuccessAction implements Action {
     readonly type = UserActionTypes.LOGIN_USER_SUCCESS;
-    constructor(public payload:{user: User}){}
+    constructor(public payload: User){}
   }
   export class LoginUserFailureAction implements Action {
     readonly type = UserActionTypes.LOGIN_USER_FAILURE;
-    constructor(public payload:{error: string}){}
+    constructor(public payload: string){}
   }
 /**
  * The action class of trying to add a user
  */
   export class AddUserAction implements Action {
     readonly type = UserActionTypes.ADD_USER_REQUEST;
-    constructor(public payload:{user: User}){}
+    constructor(public payload:User){}
   }
   export class AddUserSuccessAction implements Action {
     readonly type = UserActionTypes.ADD_USER_SUCCESS;
-    constructor(public payload:{user: User}){}
+    constructor(public payload: User){}
   }
   export class AddUserFailureAction implements Action {
     readonly type = UserActionTypes.ADD_USER_FAILURE;
-    constructor(public payload:{error: string}){}
+    constructor(public payload: string){}
   }
 /**
  * The action class of trying to update a  user 
  */
   export class UpdateUserAction implements Action {
     readonly type = UserActionTypes.UPDATE_USER_REQUEST;
-    constructor(public payload:{user: User}){}
+    constructor(public payload: User){}
   }
   export class UpdateUserSuccessAction implements Action {
     readonly type = UserActionTypes.UPDATE_USER_SUCCESS;
-    constructor(public payload:{user: User}){}
+    constructor(public payload:User){}
   }
   export class UpdateUserFailureAction implements Action {
     readonly type = UserActionTypes.UPDATE_USER_FAILURE;
-    constructor(public payload:{error: string}){}
+    constructor(public payload:string){}
   }
 
   /**
@@ -70,11 +70,11 @@ export class LoadUsersAction implements Action {
   }
   export class LoadUsersSuccessAction implements Action {
     readonly type = UserActionTypes.LOAD_ALL_USERS_SUCCESS;
-    constructor(public payload:{user: User[]}){}
+    constructor(public payload: User[]){}
   }
   export class LoadUsersFailureAction implements Action {
     readonly type = UserActionTypes.LOAD_ALL_USERS_FAILURE;
-    constructor(public payload:{error: string}){}
+    constructor(public payload: string){}
   }
 /**
  * exporting the types of actions that can be used

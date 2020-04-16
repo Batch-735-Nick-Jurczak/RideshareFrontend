@@ -3,8 +3,8 @@ import { initialState, AppUserState } from "./state";
 import { User } from 'src/app/models/user';
 
 export function UserReducer(
-  state = initialState,
-  action: UserActions
+  state:  AppUserState = initialState,
+  action: UserActions,
 ): AppUserState {
   switch (action.type) {
     case UserActionTypes.LOGIN_USER_REQUEST: {
