@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'node_modules/ngx-bootstrap';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { DriverComponent} from './components/driver/driver.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -38,6 +38,7 @@ import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 
 
+import { SortableDirective } from './directives/sortable.directive';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,8 @@ import { GooglePlaceModule } from "ngx-google-places-autocomplete";
     DriverListComponent,
     HomePageComponent,
 
+    BsNavbarComponent,
+    SortableDirective
   ],
   imports: [
     BrowserModule,
