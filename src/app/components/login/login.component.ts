@@ -40,6 +40,11 @@ export class LoginComponent implements OnInit {
 	 */
 	constructor(private modalService: BsModalService, private userService: UserService, private http: HttpClient, private authService: AuthService, public router: Router) { }
 
+	/**
+	 * When the component is initialized, the system checks
+	 * for the session storage to validate. Once validated,
+	 * the user service is called to retrieve all users.
+	 */
 	ngOnInit() {
 		this.userService.getAllUsers()
 			.subscribe(allUsers => {
@@ -53,7 +58,6 @@ export class LoginComponent implements OnInit {
 	 * A function that allows the user to choose an account to log in as
 	 * @param user
 	 */
-
 	changeUser(user) {
 		this.showDropDown = false;
 		this.curPage = 1;
@@ -66,7 +70,6 @@ export class LoginComponent implements OnInit {
 	/**
 	 * A GET method the fetches all the users
 	 */
-
 	searchAccount() {
 		this.showDropDown = true;
 		if (this.chosenUserFullName.length) {
@@ -87,38 +90,57 @@ export class LoginComponent implements OnInit {
 	}
 
 	/**
-	 * A toggle function
+	 * A toggle function to show the dropdown
 	 */
-
 	toggleDropDown() {
 		this.showDropDown = !this.showDropDown;
 	}
 
+	/**
+	 * Set next page
+	 */
+	nextPage() {
+		this.curPage++;
+		this.users = this.allUsers.slice(this.curPage * 5 - 5, this.curPage * 5);
+	}
+
+	/**
+	 * Set prev page
+	 */
+	prevPage() {
+		this.curPage--;
+		this.users = this.allUsers.slice(this.curPage * 5 - 5, this.curPage * 5);
+	}
 
 	/**
 	 * A function that indicate a fail to login
 	 */
-
-
 	loginFailed() {
 		this.userName = '';
 		this.failed = true;
 	}
 
+	/**
+	 * A function that sets user as banned
+	 */
 	loginBanned() {
 		this.userName = '';
 		this.banned = true;
 	}
 
+	/**
+	 * A function that opens the modalservice
+	 */
 	openModal(template: TemplateRef<any>) {
 		this.modalRef = this.modalService.show(template);
   }
 
 
 	/**
-	 * A login function
+	 * A login function that checks if the user information
+	 * is correct in the database, if true then it routes
+	 * the user to the drivers page.
 	 */
-
 	login() {
 		this.pwdError = '';
 		this.usernameError = '';
@@ -126,7 +148,6 @@ export class LoginComponent implements OnInit {
 		this.http.get(`${environment.loginUri}?userName=${this.userName}&passWord=${this.passWord}`)
 			.subscribe(
 				(response) => {
-					//console.log(response);
 					if (response["userName"] != undefined) {
 						this.usernameError = response["userName"][0];
 					}
@@ -149,21 +170,5 @@ export class LoginComponent implements OnInit {
 					}
 				}
 			);
-		/*this.http.get<User[]>(`${environment.userUri}?username=${this.userName}`)
-			.subscribe((user: User[]) => {
-				if (!user.length) {
-					this.loginFailed();
-				}
-				else if(this.chosenUser.active == false){
-					this.loginBanned();
-				}
-				else {
-					if (!this.authService.login(user[0], this.chosenUser.userName)) {
-						this.loginFailed();
-					}
-				}
-			});*/
 	}
-
-
 }
