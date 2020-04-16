@@ -30,9 +30,9 @@ export class AppComponent {
      })
 
   }
- } 
+ }
 getGoogleApi()  {
-    this.http.get(`${environment.loginUri}getGoogleApi`)
+    this.http.get(`${environment.loginUri}/getGoogleApi`)
        .subscribe(
                  (response) => {
                      //console.log(response);
@@ -41,14 +41,14 @@ getGoogleApi()  {
                            let script: HTMLScriptElement = document.createElement('script');
                            script.addEventListener('load', r => resolve());
                            script.src = `http://maps.googleapis.com/maps/api/js?key=${response["googleMapAPIKey"][0]}&libraries=places&language=en`;
-                           document.body.appendChild(script);      
-                     }); 
-               }    
+                           document.body.appendChild(script);
+                     });
+               }
            }
        );
    }
 
-   
+
 
 
 }

@@ -4,7 +4,6 @@ import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { UserService } from 'src/app/services/user-service/user.service';
 import { User } from 'src/app/models/user';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -149,33 +148,12 @@ export class LoginComponent implements OnInit {
 	 * the user to the drivers page.
 	 */
 	login() {
-		this.pwdError = '';
-		this.usernameError = '';
 
-		this.http.get(`${environment.loginUri}?userName=${this.userName}&passWord=${this.passWord}`)
-			.subscribe(
-				(response) => {
-					if (response["userName"] != undefined) {
-						this.usernameError = response["userName"][0];
-					}
-					if (response["passWord"] != undefined) {
-						this.pwdError = response["pwdError"][0];
-					}
-					if ((response["name"] != undefined) && (response["userid"] != undefined)) {
-						sessionStorage.setItem("name", response["name"]);
-						sessionStorage.setItem("userid", response["userid"]);
-						sessionStorage.setItem("hcity", response["hcity"]);
-						sessionStorage.setItem("haddress", response["haddress"]);
-						sessionStorage.setItem("hstate", response["hstate"]);
+    this.authService.login(this.userName,this.passWord);
 
-						//call landing page
-						//this.router.navigate(['landingPage']);
-						location.replace('drivers');
-					}
-					if (response["userNotFound"] != undefined) {
-						this.userNotFound = response["userNotFound"][0];
-					}
-				}
-			);
+	  location.replace('drivers');
+
+
+
 	}
 }

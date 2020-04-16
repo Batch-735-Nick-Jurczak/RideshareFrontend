@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user-service/user.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Driver } from 'src/app/models/driver';
+import {} from 'googlemaps';
 
 @Component({
   selector: 'app-driver-list',
@@ -35,7 +36,7 @@ export class DriverListComponent implements OnInit {
   mapProperties: {};
 
   /**
-   * The current pagesize for the number of items for 
+   * The current pagesize for the number of items for
    * the  pagination of the driver table.
    */
   pageSize = 5;
@@ -98,7 +99,7 @@ export class DriverListComponent implements OnInit {
     // get google api key to compute distance and duration
     this.getGoogleApi();
 
-    // sleep for 1 second while the google 
+    // sleep for 1 second while the google
     // API key is grabbed and then initilize the drivers
     this.sleep(1000).then(() => {
       //this.userService.getRidersForBatch(1).subscribe(
@@ -248,12 +249,12 @@ export class DriverListComponent implements OnInit {
 
 
   /**
-   * getGoogleApi gets the API key 
+   * getGoogleApi gets the API key
    * to be able to leverage the Google API
    */
   getGoogleApi() {
     this.http
-      .get(`${environment.loginUri}getGoogleApi`)
+      .get(`${environment.loginUri}/getGoogleApi`)
       .subscribe((response) => {
         if (response['googleMapAPIKey'] !== undefined) {
           new Promise((resolve) => {

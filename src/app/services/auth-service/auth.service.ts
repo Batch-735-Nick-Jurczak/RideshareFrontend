@@ -89,8 +89,11 @@ export class AuthService {
 
     sessionStorage.setItem("id_token", authResult.token);
     sessionStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
-    sessionStorage.setItem("user_id", JSON.stringify(authResult.user_id));
-    sessionStorage.setItem("name", JSON.stringify(authResult.firstName));
+    sessionStorage.setItem("user_id", JSON.stringify(authResult.userId));
+    sessionStorage.setItem("name", authResult.firstName);
+    sessionStorage.setItem("hcity", authResult.hCity);
+    sessionStorage.setItem("haddress", authResult.hAddress);
+    sessionStorage.setItem("hstate", authResult.hState);
   }
 
   /**
@@ -102,6 +105,9 @@ export class AuthService {
     sessionStorage.removeItem("expires_at");
     sessionStorage.removeItem("user_id");
     sessionStorage.removeItem("name");
+    sessionStorage.removeItem("hcity");
+    sessionStorage.removeItem("haddress");
+    sessionStorage.removeItem("hstate");
   }
 
   /**
