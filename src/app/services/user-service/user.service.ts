@@ -29,7 +29,7 @@ export class UserService {
 	 * Set up the url string to the env var
 	 * Creates a new user object
 	 */
-	url: string = environment.userUri;
+	url: string = environment.userUri + "/";
 	user: User = new User();
 
 	/**

@@ -2,7 +2,7 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'node_modules/ngx-bootstrap';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -34,7 +34,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { httpInterceptorProviders  } from "./http-interceptors/index"
 import { AuthGuard } from './guards/auth.guard';
-
+import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 
 
 
@@ -70,7 +71,9 @@ import { AuthGuard } from './guards/auth.guard';
     AppRoutingModule,
     FormsModule,
     ModalModule.forRoot(),
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule,
+    GooglePlaceModule
   ],
   providers: [
     UserService,

@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /documentation
+
 # Only exists if Bazel was run
 /bazel-out
 
@@ -41,6 +42,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+**/src/main.ts
 
 # System Files
 .DS_Store
