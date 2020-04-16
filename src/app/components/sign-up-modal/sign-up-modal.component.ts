@@ -34,7 +34,7 @@ export class SignupModalComponent implements OnInit {
   hStateError :string;
   hCityError :string;
   hZipError :string;
-  
+
   success :string;
   //Store the retrieved template from the 'openModal' method for future use cases.
   modalRef :BsModalRef;
@@ -45,17 +45,14 @@ export class SignupModalComponent implements OnInit {
   constructor(private modalService :BsModalService, private userService :UserService, private batchService :BatchService, private validationService :ValidationService) { }
 
   ngOnInit() {
-    this.userService.getAllUsers().subscribe(
-      res => {
-        //console.log(res);
-      }
-    );
 
-  this.batchService.getAllBatchesByLocation1().subscribe(
-      res => {
-         this.batches = res;
-          },
-      );
+
+
+  // this.batchService.getAllBatchesByLocation1().subscribe(
+  //     res => {
+  //        this.batches = res;
+  //         },
+  //     );
   }
   //Opens 'sign up' modal that takes in a template of type 'ng-template'.
 
@@ -79,14 +76,14 @@ export class SignupModalComponent implements OnInit {
     this.user.wState = this.user.hState;
     this.user.wCity = this.user.hCity;
     this.user.wZip = this.user.hZip;
-    let driver = <HTMLInputElement> document.getElementById("driver");  
-    let rider = <HTMLInputElement> document.getElementById("rider");  
+    let driver = <HTMLInputElement> document.getElementById("driver");
+    let rider = <HTMLInputElement> document.getElementById("rider");
 
     if(driver.checked == true){
-      this.user.isDriver =  true;
+      this.user.driver =  true;
     }
     if(rider.checked == true){
-      this.user.isDriver =  false;
+      this.user.driver =  false;
     }
     //console.log(this.user);
     this.userService.addUser(this.user).subscribe(
@@ -100,7 +97,7 @@ export class SignupModalComponent implements OnInit {
         if(res.lastName != undefined){
           this.lastNameError = res.lastName[0];
           i = 1;
-          
+
         }
         if(res.phoneNumber != undefined){
           this.phoneNumberError = res.phoneNumber[0];
@@ -141,12 +138,12 @@ export class SignupModalComponent implements OnInit {
           i = 0;
           this.success = "Registered successfully!";
         }
-      } 
+      }
       /*res => {
         console.log("failed to add user");
         console.log(res);
       }*/
     );
-  
+
     }
     }

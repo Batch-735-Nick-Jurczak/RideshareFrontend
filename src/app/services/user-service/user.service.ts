@@ -22,7 +22,7 @@ export class UserService {
 
 	// http headers
 	private headers = new HttpHeaders({'Content-Type': 'application/json'});
-	
+
 
 
 	/**
@@ -41,7 +41,7 @@ export class UserService {
 	 */
 
 	constructor(private http: HttpClient, private router: Router, private log: LogService, private authService: AuthService) { }
-  
+
 	/**
 	 * A GET method for all users
 	 */
@@ -49,22 +49,35 @@ export class UserService {
 	getAllUsers() {
 		return this.http.get<User[]>(this.url);
 	}
-	
+
 	/**
 	 * A GET method for one user
-	 * @param idParam 
+	 * @param idParam
 	 */
 	getUserById(idParam: number){
-		
+
 		console.log(this.url)
 		return this.http.get<User>(this.url+idParam).toPromise();
 
 
+  }
+
+
+	/**
+	 * A GET method for one user
+	 * @param userName
+	 */
+	getUserByUserName(userName: string){
+
+		console.log(this.url+userName)
+		return this.http.get<User>(this.url+userName);
+
+
 	}
 
-	 
+
 	getUserById2(idParam2: String): Observable<User>{
-		
+
 		//console.log(this.url)
 		return this.http.get<User>(this.url+idParam2);
 
@@ -73,14 +86,14 @@ export class UserService {
 
 	/**
 	 * A POST method that switch an Rider to a Driver
-	 * @param user 
-	 * @param role 
+	 * @param user
+	 * @param role
 	 */
 	createDriver(user: User, role) {
 
 		user.active = true;
-		user.isDriver = false;
-		user.isAcceptingRides = false;
+		user.driver = false;
+		user.acceptingRides = false;
 		console.log(user);
 
 		this.http.post(this.url, user, {observe: 'response'}).subscribe(
@@ -116,17 +129,17 @@ export class UserService {
 
 	/**
 	 * A PUT method that updates the user information
-	 * @param isDriver 
-	 * @param userId 
+	 * @param driver
+	 * @param userId
 	 */
 
-	updateIsDriver(isDriver, userId) {
+	updateIsDriver(driver, userId) {
 
 		this.getUserById(userId)
 			.then((response) => {
 				this.user = response;
-				this.user.isDriver = isDriver;
-				this.user.isAcceptingRides = (this.user.active && isDriver);
+				this.user.driver = driver;
+				this.user.acceptingRides = (this.user.active && driver);
 
 				this.http.put(this.url+userId, this.user).subscribe(
 					(response) => {
@@ -143,9 +156,9 @@ export class UserService {
 
 	/**
 	 * A PUT method that updates the preference of the user
-	 * @param property 
-	 * @param bool 
-	 * @param userId 
+	 * @param property
+	 * @param bool
+	 * @param userId
 	 */
 
 	updatePreference(property, bool, userId) {
@@ -155,7 +168,7 @@ export class UserService {
 				this.user = response;
 				this.user[property] = bool;
 				if (property === 'active' && bool === false) {
-					this.user.isAcceptingRides = false;
+					this.user.acceptingRides = false;
 				}
 
 				this.http.put(this.url+userId, this.user).subscribe(
@@ -172,7 +185,7 @@ export class UserService {
 
 	/**
 	 * A PUT method that updates user's information
-	 * @param user 
+	 * @param user
 	 */
 
 	updateUserInfo(user: User) {
@@ -181,24 +194,24 @@ export class UserService {
 	}
 	/**
 	 * A GET method that retrieves a driver by Id
-	 * @param id 
+	 * @param id
 	 */
 
 	getDriverById(id: number): Observable <any>{
 		return this.http.get(this.url + id);
 	}
-	
+
 	/**
 	 * A PUT method that changes the isAcceptingRide variable
-	 * @param data 
+	 * @param data
 	 */
 
 	changeDriverIsAccepting(data) {
 		let id=data.userId;
 		return this.http.put(this.url+id, data).toPromise()
-		
+
 	  }
-	  
+
 	  getRidersForLocation(location: string): Observable <any>{
 		return this.http.get(this.url + '?is-driver=false&location='+ location)
 	  }
@@ -218,7 +231,7 @@ export class UserService {
         headers: new HttpHeaders({"Content-Type": "application/json"}),
         observe: "response" as "body"
       }
-  
+
     /**
      * A function that bans users.
      */
@@ -226,7 +239,7 @@ export class UserService {
       this.body = JSON.stringify(user);
       this.http.put(`${this.url + user.userId}`,this.body,this.httpOptions).subscribe();
 	}
-	
+
 	getRidersForLocation1(location: string): Observable <any>{
 		return this.http.get(this.url + 'driver/'+ location)
 	}
