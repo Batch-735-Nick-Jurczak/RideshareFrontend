@@ -33,6 +33,8 @@ import { DriverListComponent } from './components/driver-list/driver-list.compon
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { httpInterceptorProviders  } from "./http-interceptors/index"
+import { AuthGuard } from './guards/auth.guard';
+
 
 
 

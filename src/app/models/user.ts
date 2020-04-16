@@ -10,6 +10,10 @@ export class User {
      */
     userName: string;
     /**
+     * Set username as a string
+     */
+    password: string;
+    /**
      * Attached a batch object
      */
     batch: Batch = new Batch();
