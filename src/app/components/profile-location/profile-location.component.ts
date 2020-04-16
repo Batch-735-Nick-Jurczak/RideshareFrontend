@@ -5,6 +5,9 @@ import {} from 'googlemaps';
 import { HttpClient } from '@angular/common/http';
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import * as jwt from "jwt-decode";
+import { environment } from '../../../environments/environment';
+
 
 
 @Component({
@@ -13,22 +16,24 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
   styleUrls: ['./profile-location.component.css']
 })
 
- 
+
 export class ProfileLocationComponent implements OnInit {
 
   /**
    * Referencing Google Places Directive from the google autocomplete package
    */
     @ViewChild("placesRef",{static: true}) placesRef : GooglePlaceDirective;
-    
+
  /**
   *  toggle for hiding and showing the second address;
-  */   
+  */
   showAddress2:Boolean=false;
   /**
    * address information that will be manipulated via ngModel
    */
 
+formattedAddress:any = "";
+  currentUser:User;
   zipcode: number;
   city:string;
   address:string;
@@ -37,7 +42,6 @@ export class ProfileLocationComponent implements OnInit {
   /**
    * initialzing a variable to hold the User object
    */
-  currentUser: User;
 /**
  * Placeholder variables for when validation comes back from the database
  * we can print the success or the error to the screen
@@ -52,31 +56,29 @@ export class ProfileLocationComponent implements OnInit {
       componentRestrictions: { country: ['US'] },
     }
 
-  
+  location_s : string =''; //sample: Morgantown, WV
 
-    /**
-     * importing the user services to get the current user
-     * and their current location information.
-     * @param userService 
-     */
-  constructor(private userService: UserService) { }
+
+  @ViewChild('map', {static: true}) mapElement: any;
+  map: google.maps.Map;
+
+  mapProperties :{};
+
+  constructor(private http: HttpClient,private userService: UserService) { }
 
   ngOnInit() {
-/**
- * service calling the database and returning a user
- */
-   this.userService.getUserById2(sessionStorage.getItem("userid")).subscribe((response)=>{
-    /**
-     * setting the response(user) to the scope of this component  
-     */  
-    this.currentUser = response;
-    /**
-     * setting the necessary fields for this component
-     */
+
+//this.getGoogleApi();
+
+
+
+    let token = jwt(localStorage.getItem("id_token"));
+    this.userService.getUserByUserName(token.sub).subscribe((response) => {
+      console.log(response);
+      this.currentUser = response;
       this.zipcode = response.hZip;
       this.city = response.hCity;
       this.address = response.hAddress;
-      this.address2 = response.wAddress;
       this.hState = response.hState;
     });
   }
@@ -102,9 +104,9 @@ export class ProfileLocationComponent implements OnInit {
     this.success = "Updated Successfully!";
   }
 /**
- * setFields function is used to take the autocompleted information and set it the corresponding 
+ * setFields function is used to take the autocompleted information and set it the corresponding
  * address values.
- * @param $event is passed in from the form, it houses the google-autocomplete event information 
+ * @param $event is passed in from the form, it houses the google-autocomplete event information
  * to be loop through
  */
   public setFields($event){
@@ -135,7 +137,7 @@ export class ProfileLocationComponent implements OnInit {
      */
      else if (type === "route") {
       streetaddy= streetaddy + " " + ($event.address_components[index].long_name);
-    } 
+    }
      /**
      * Getting the city and setting it to the field
      */
@@ -152,7 +154,7 @@ export class ProfileLocationComponent implements OnInit {
      */
     else if (type === "postal_code") {
       this.zipcode = ($event.address_components[index].long_name);
-    } 
+    }
     else {
     }
   }
@@ -169,4 +171,64 @@ export class ProfileLocationComponent implements OnInit {
 showAddress(){
   this.showAddress2=!this.showAddress2
 }
+  });
+
+  // updatesContactInfo(){
+  //   this.currentUser.hZip = this.zipcode;
+  //   this.currentUser.hCity = this.city;
+  //   this.currentUser.hAddress = this.address;
+  //   this.currentUser.wAddress = this.address2;
+  //   this.currentUser.hState = this.hState;
+  //   this.userService.updateUserInfo(this.currentUser);
+  //   this.success = "Updated Successfully!";
+  // }
+}
+
+// public setFields($event){
+//   for (let index = 0; index < $event.address_components.length; index++) {
+//     let type = $event.address_components[index].types[0];
+//     console.log(type);
+//     if (type === "street_number") {
+//       this.address = ($event.address_components[index].long_name);
+//       }
+//     //  else if (type === "route") {
+//     //   this.customer.street = this.customer.street + " " + ($event.address_components[index].long_name);
+//     // } else if (type === "locality") {
+//     //   this.customer.city = ($event.address_components[index].long_name);
+//     // } else if (type === "administrative_area_level_1") {
+//     //   this.customer.state = ($event.address_components[index].short_name);
+//     // }
+//     else if (type === "postal_code") {
+//       this.zipcode = ($event.address_components[index].long_name);
+//     }
+//     else {
+//     }
+//   }
+// }
+
+getGoogleApi()  {
+  this.http.get(`${environment.loginUri}/getGoogleApi`)
+     .subscribe(
+               (response) => {
+                   console.log(response);
+                   if(response["googleMapAPIKey"] != undefined){
+                       new Promise((resolve) => {
+                         let script: HTMLScriptElement = document.createElement('script');
+                         script.addEventListener('load', r => resolve());
+                         script.src = `http://maps.googleapis.com/maps/api/js?libraries=places&key=${response["googleMapAPIKey"][0]}`;
+                         document.head.appendChild(script);
+                   });
+             }
+         }
+     );
+ }
+
+ public handleAddressChange(address: any) {
+  this.formattedAddress=address.formatted_address;
+}
+
+options={
+
+}
+
 }

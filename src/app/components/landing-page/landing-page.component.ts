@@ -46,10 +46,10 @@ sleep(ms) {
 }
 
  getGoogleApi()  {
-  this.http.get(`${environment.loginUri}getGoogleApi`)
+  this.http.get(`${environment.loginUri}/getGoogleApi`)
      .subscribe(
                (response) => {
-                   //console.log(response);
+                   console.log(response);
                    if(response["googleMapAPIKey"] != undefined){
                        new Promise((resolve) => {
                          let script: HTMLScriptElement = document.createElement('script');

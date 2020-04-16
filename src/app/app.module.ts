@@ -36,6 +36,8 @@ import { httpInterceptorProviders  } from "./http-interceptors/index"
 import { AuthGuard } from './guards/auth.guard';
 import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { AgmCoreModule } from "@agm/core"
+
 
 
 import { SortableDirective } from './directives/sortable.directive';
