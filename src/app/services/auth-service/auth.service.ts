@@ -35,7 +35,7 @@ export class AuthService {
 
   /**
    * An user object is created
-   * TODO: Not sure why we need this
+   *
    */
   public user: any = {};
   public admin: Admin = new Admin();
@@ -52,6 +52,12 @@ export class AuthService {
       if (res) {
         this.setSession(res);
 
+        if (res.role === "ADMIN") {
+          this.admin.adminId = res.userId;
+          this.admin.userName = res.userName;
+        } else {
+          this.user = res;
+        }
         if (res.driver) {
           this.router.navigate(["/home/riders"]);
           return true;
@@ -81,8 +87,10 @@ export class AuthService {
     const expiresAt = moment().add(token.exp);
     console.log(expiresAt, " This is the expitration");
 
-    localStorage.setItem("id_token", authResult.token);
-    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
+    sessionStorage.setItem("id_token", authResult.token);
+    sessionStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
+    sessionStorage.setItem("user_id", JSON.stringify(authResult.user_id));
+    sessionStorage.setItem("name", JSON.stringify(authResult.firstName));
   }
 
   /**
@@ -90,8 +98,10 @@ export class AuthService {
    */
 
   logout() {
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("expires_at");
+    sessionStorage.removeItem("id_token");
+    sessionStorage.removeItem("expires_at");
+    sessionStorage.removeItem("user_id");
+    sessionStorage.removeItem("name");
   }
 
   /**

@@ -1,19 +1,19 @@
 
-<div class="container mainContainer">
-    
+<div class="mainContainer">
+
     <i class="fa fa-user" style="font-family:'FontAwesome';"></i>
-       
+
         <h4>Contact Information:</h4>
     <form #userForm="ngForm" (ngSubmit)="updatesContactInfo(userForm)">
         <div class="form-group row">
             <div class="col-sm-1"></div>
                 <label for="f_name" class="col-sm-4 col-form-label">First Name:</label>
                 <div class="col-sm-4">
-                    <input type="text" 
-                    class="form-control" 
+                    <input type="text"
+                    class="form-control"
                     id="f_name"
-                    name="firstName" 
-                    [(ngModel)]=firstName 
+                    name="firstName"
+                    [(ngModel)]=firstName
                     [ngClass]="{'is-invalid':userFirstName.errors && userFirstName.touched}"
                     value="{{ profileObject?.firstName }}"
                     #userFirstName="ngModel"
@@ -21,16 +21,16 @@
                     <div class="invalid-feedback"[hidden]="!userFirstName.errors?.required"> First Name Required</div>
                 </div>
         </div>
-        
+
         <div class="form-group row">
                 <div class="col-sm-1"></div>
             <label for="l_name" class="col-sm-4 col-form-label">Last Name:</label>
             <div class="col-sm-4">
-                <input type="text" 
-                class="form-control" 
-                id="l_name" 
+                <input type="text"
+                class="form-control"
+                id="l_name"
                 name="lastName"
-                [(ngModel)]=lastName 
+                [(ngModel)]=lastName
                 [ngClass]="{'is-invalid':userLastName.errors && userLastName.touched}"
                 value="{{ profileObject?.lastName }}"
                 #userLastName="ngModel"
@@ -38,17 +38,17 @@
                 <div class="invalid-feedback"[hidden]="!userLastName.errors?.required"> Last Name Required</div>
             </div>
         </div>
-    
+
         <div class="form-group row">
                 <div class="col-sm-1"></div>
             <label for="user_email" class="col-sm-4 col-form-label">Email:</label>
             <div class="col-sm-4">
-                <input type="email" 
-                class="form-control" 
-                id="user_email" 
-                required 
-                aria-describedby="emailHelp" 
-                [(ngModel)]=email 
+                <input type="email"
+                class="form-control"
+                id="user_email"
+                required
+                aria-describedby="emailHelp"
+                [(ngModel)]=email
                 [ngClass]="{'is-invalid':userEmail.errors && userEmail.touched}"
                 value="{{ profileObject?.email }}"
                 #userEmail="ngModel"
@@ -58,16 +58,16 @@
                 <div class="invalid-feedback"[hidden]="!userEmail.errors?.pattern"> Email is not Valid</div>
             </div>
         </div>
-    
+
         <div class="form-group row">
                 <div class="col-sm-1"></div>
             <label for="phone" class="col-sm-4 col-form-label">Phone:</label>
             <div class="col-sm-4">
-                <input type="text" 
-                class="form-control" 
-                id="phone" 
+                <input type="text"
+                class="form-control"
+                id="phone"
                 name="phone"
-                required [(ngModel)]=phone 
+                required [(ngModel)]=phone
                 [ngClass]="{'is-invalid':userPhone.errors && userPhone.touched}"
                 value="{{ profileObject?.phoneNumber }}"
                 #userPhone="ngModel"
@@ -77,10 +77,9 @@
                 <p *ngIf="success != ''" class="success">{{success}}</p>
             </div>
         </div>
-        
+
         <button type="submit" class="btn btn-primary myBtn" [disabled]="!userForm.form.valid">Save</button>
     </form>
     </div>
-  
-        
-    
+
+

@@ -24,9 +24,9 @@ export class ProfileCarComponent implements OnInit {
 
   /**
    * The Constructor gets a car service and user service injected.
-   * 
-   * @param carService 
-   * @param userService 
+   *
+   * @param carService
+   * @param userService
    */
   constructor(
     private carService: CarService,

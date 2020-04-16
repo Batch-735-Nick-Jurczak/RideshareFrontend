@@ -1,7 +1,6 @@
 import { Component, OnInit, NgModule, TemplateRef } from '@angular/core';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
-import { Router, RouterModule } from '@angular/router';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
 	selector: 'app-login',
@@ -31,14 +30,15 @@ export class LoginComponent implements OnInit {
 	pwdError: string;
 	usernameError: string;
 	userNotFound: string;
-	modalRef: BsModalRef;
+  modalRef :NgbModalRef;
+
 	/**
 	 * This is a constructor
 	 * @param http A HTTP Client is created.
 	 * @param authService An auth service is injected.
 	 *
 	 */
-	constructor(private modalService: BsModalService, private userService: UserService, private http: HttpClient, private authService: AuthService, public router: Router) { }
+	constructor(private modalService :NgbModal,private authService: AuthService) { }
 
 	/**
 	 * When the component is initialized, the system checks
@@ -128,11 +128,8 @@ export class LoginComponent implements OnInit {
 		this.banned = true;
 	}
 
-	/**
-	 * A function that opens the modalservice
-	 */
-	openModal(template: TemplateRef<any>) {
-		this.modalRef = this.modalService.show(template);
+	openModal(template :TemplateRef<any>){
+		this.modalRef = this.modalService.open(template);
   }
 
 

@@ -71,10 +71,10 @@ export class CarService {
    * @param userId
    */
 
-  createCar(car, username) {
+  createCar(car, userId) {
 
-    this.user = this.userService.getUserByUsername(username);
-    car.user = this.user;
+    this.user.userId = userId;
+		car.user = this.user;
 
     this.http.post(this.url, car, { observe: "response" }).subscribe(
       response => {

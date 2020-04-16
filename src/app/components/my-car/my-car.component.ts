@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { LogService } from 'src/app/services/log.service';
+import * as jwt from "jwt-decode";
 
 @Component({
   selector: 'app-my-car',
@@ -35,16 +36,14 @@ export class MyCarComponent implements OnInit {
    * This is OnInit functiion
    */
   ngOnInit() {
-    this.userId = this.authService.user.userId;
-    if (!this.userId) {
-      this.router.navigate(['']);
-    } else {
+
+      this.userId = Number.parseInt(sessionStorage.getItem("user_id"));
       this.carService.getCarByUserId(this.userId).then((response)=>{
         if (response) {
           this.myCar = response;
         }
       })
-    }
+
   }
 
   /**
@@ -54,7 +53,7 @@ export class MyCarComponent implements OnInit {
   removeMyCar() {
     this.carService.removeCar(this.myCar.carId).subscribe(
       Response => {
-      this.logService.info("updated user info: " + '\n' + JSON.stringify(Response));  
+      this.logService.info("updated user info: " + '\n' + JSON.stringify(Response));
     }, error => {
       this.logService.error(error)
     })
