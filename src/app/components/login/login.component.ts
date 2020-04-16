@@ -1,6 +1,11 @@
 import { Component, OnInit, NgModule, TemplateRef } from '@angular/core';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { UserService } from 'src/app/services/user-service/user.service';
+import { User } from 'src/app/models/user';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
 	selector: 'app-login',
@@ -22,7 +27,12 @@ export class LoginComponent implements OnInit {
 	userName: string = '';
 	passWord: string = '';
 	totalPage: number = 1;
-	curPage: number = 1;
+  curPage: number = 1;
+  allUsers: User[];
+  users;
+  showDropDown: boolean;
+  chosenUserFullName: string;
+  chosenUser: User;
 
 	failed: boolean = false;
 	banned: boolean = false;
@@ -38,7 +48,7 @@ export class LoginComponent implements OnInit {
 	 * @param authService An auth service is injected.
 	 *
 	 */
-	constructor(private modalService :NgbModal,private authService: AuthService) { }
+	constructor(private modalService :NgbModal,private authService: AuthService, private userService: UserService, private http: HttpClient) { }
 
 	/**
 	 * When the component is initialized, the system checks
@@ -78,7 +88,7 @@ export class LoginComponent implements OnInit {
 					user.firstName.toLowerCase().startsWith(this.chosenUserFullName.toLowerCase()) ||
 					user.lastName.toLowerCase().startsWith(this.chosenUserFullName.toLowerCase()) ||
 					`${user.firstName} ${user.lastName}`.toLowerCase().startsWith(this.chosenUserFullName.toLowerCase()) ||
-					`${user.firstName} ${user.lastName}: ${user.isDriver ? 'Driver' : 'Rider'}`.toLowerCase().startsWith(this.chosenUserFullName.toLowerCase())
+					`${user.firstName} ${user.lastName}: ${user.driver ? 'Driver' : 'Rider'}`.toLowerCase().startsWith(this.chosenUserFullName.toLowerCase())
 				);
 			});
 			this.totalPage = Math.ceil(this.users.length / 5);

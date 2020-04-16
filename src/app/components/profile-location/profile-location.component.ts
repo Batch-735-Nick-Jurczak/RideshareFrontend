@@ -171,7 +171,7 @@ formattedAddress:any = "";
 showAddress(){
   this.showAddress2=!this.showAddress2
 }
-  });
+
 
   // updatesContactInfo(){
   //   this.currentUser.hZip = this.zipcode;
@@ -182,7 +182,7 @@ showAddress(){
   //   this.userService.updateUserInfo(this.currentUser);
   //   this.success = "Updated Successfully!";
   // }
-}
+
 
 // public setFields($event){
 //   for (let index = 0; index < $event.address_components.length; index++) {
@@ -225,10 +225,6 @@ getGoogleApi()  {
 
  public handleAddressChange(address: any) {
   this.formattedAddress=address.formatted_address;
-}
-
-options={
-
 }
 
 }

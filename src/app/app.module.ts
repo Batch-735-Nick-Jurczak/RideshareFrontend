@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ModalModule } from 'node_modules/ngx-bootstrap';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { DriverComponent} from './components/driver/driver.component';
@@ -30,11 +29,9 @@ import { ProfileLocationComponent } from './components/profile-location/profile-
 import { ProfileMembershipComponent } from './components/profile-membership/profile-membership.component';
 import { DriverContactModalComponent } from './components/driver-contact-modal/driver-contact-modal.component';
 import { DriverListComponent } from './components/driver-list/driver-list.component';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { httpInterceptorProviders  } from "./http-interceptors/index"
 import { AuthGuard } from './guards/auth.guard';
-import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
 import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 import { AgmCoreModule } from "@agm/core"
 
@@ -64,8 +61,6 @@ import { SortableDirective } from './directives/sortable.directive';
     DriverContactModalComponent,
     DriverListComponent,
     HomePageComponent,
-
-    BsNavbarComponent,
     SortableDirective
   ],
   imports: [
@@ -75,7 +70,6 @@ import { SortableDirective } from './directives/sortable.directive';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ModalModule.forRoot(),
     NgbModule,
     ReactiveFormsModule,
     GooglePlaceModule
@@ -87,7 +81,6 @@ import { SortableDirective } from './directives/sortable.directive';
     AuthService,
     ValidationService,
     httpInterceptorProviders,
-    BsModalService
   ],
   bootstrap: [AppComponent]
 })
