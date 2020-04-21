@@ -18,21 +18,22 @@ import { DriverContactModalComponent } from './components/driver-contact-modal/d
 import { DriverListComponent } from './components/driver-list/driver-list.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { AuthGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
-  {path: 'home/drivers', component: DriverInfoComponent},
-  {path: 'home/riders', component: DriverComponent},
-  {path: 'all-drivers', component: DriverInfoComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'login/adminhome', component: AdminComponent},
-  {path: 'new/car', component: CarRegisterComponent},
-  {path: 'car', component: MyCarComponent},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'preference', component: PreferenceComponent},
-  {path: 'signup', component: SignupModalComponent},
-  {path: 'landingPage', component: LandingPageComponent},
-  {path: 'drivers', component: DriverListComponent},
+{path: 'home/drivers', component: DriverInfoComponent},
+{path: 'home/riders', component: DriverComponent},
+{path: 'all-drivers', component: DriverInfoComponent},
+{path: 'login', component: LoginComponent},
+{path: 'login/adminhome', component: AdminComponent},
+{path: 'new/car', component: CarRegisterComponent},
+{path: 'car', component: MyCarComponent},
+{path: 'profile', component: ProfileComponent},
+{path: 'preference', component: PreferenceComponent},
+{path: 'signup', component: SignupModalComponent},
+{path: 'landingPage', component: LandingPageComponent},
+{path: 'drivers', component: DriverListComponent},
 {path: 'profile/contact', component: ProfileContactComponent},
 {path: 'profile/car', component: ProfileCarComponent},
 {path: 'profile/membership', component: ProfileMembershipComponent},

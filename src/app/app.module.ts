@@ -2,10 +2,9 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ModalModule } from 'node_modules/ngx-bootstrap';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { DriverComponent} from './components/driver/driver.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -30,7 +29,6 @@ import { ProfileLocationComponent } from './components/profile-location/profile-
 import { ProfileMembershipComponent } from './components/profile-membership/profile-membership.component';
 import { DriverContactModalComponent } from './components/driver-contact-modal/driver-contact-modal.component';
 import { DriverListComponent } from './components/driver-list/driver-list.component';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { httpInterceptorProviders  } from "./http-interceptors/index";
 import { RootStoreModule } from './root-store/root-store.module';
@@ -38,8 +36,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { AuthGuard } from './guards/auth.guard';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { AgmCoreModule } from "@agm/core"
 
 
+
+import { SortableDirective } from './directives/sortable.directive';
 
 @NgModule({
   declarations: [
@@ -63,7 +66,7 @@ import { environment } from '../environments/environment';
     DriverContactModalComponent,
     DriverListComponent,
     HomePageComponent,
-
+    SortableDirective
   ],
   imports: [
     BrowserModule,
@@ -72,12 +75,14 @@ import { environment } from '../environments/environment';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ModalModule.forRoot(),
     NgbModule,
     RootStoreModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    NgbModule,
+    ReactiveFormsModule,
+    GooglePlaceModule
   ],
   providers: [
     UserService,
@@ -86,7 +91,6 @@ import { environment } from '../environments/environment';
     AuthService,
     ValidationService,
     httpInterceptorProviders,
-    BsModalService
   ],
   bootstrap: [AppComponent]
 })

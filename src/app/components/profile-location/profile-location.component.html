@@ -1,38 +1,74 @@
 
-<div class="container mainContainer">
+<div class="mainContainer">
     <i class="fa fa-home" style="font-family:'FontAwesome';"></i>
-       
+
         <h4>Location:</h4>
-        
+
+
+        <!-- <mat-form-field class="full-width">
+            <mat-label>Address</mat-label>
+            <input matInput id="street" [(ngModel)]="customer.street" name="street"
+                placeholder="Address" ngx-google-places-autocomplete [options]='options'
+                #placesRef="ngx-places" (onAddressChange)="setFields($event)">
+        </mat-form-field> -->
+
+
+        <input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
+        <p>{{formattedAddress}}</p>
+
+
         <div class="form-group row">
             <div class="col-sm-1"></div>
                 <label for="address" class="col-sm-4 col-form-label">Address:</label>
                 <div class="col-sm-4">
-                    <input [(ngModel)]=address type="text" class="form-control" id="address">
+                    <input ngx-google-places-autocomplete
+                     [options]='options'
+                     #placesRef="ngx-places"
+                     [(ngModel)]=address
+                     (onAddressChange)="setFields($event)"
+                     [ngClass]="{'is-invalid':userAddress.errors && userAddress.touched}"
+                     class="form-control"
+                     name="userAddress"
+                     #userAddress="ngModel"
+                     required/>
+                     <div class="invalid-feedback"[hidden]="!userAddress.errors?.required"> Address ss Requried</div>
                 </div>
         </div>
-        
-        <div class="form-group row">
+
+        <div class="form-group row" *ngIf="showAddress2">
                 <div class="col-sm-1"></div>
             <label for="address2" class="col-sm-4 col-form-label">Address 2:</label>
             <div class="col-sm-4">
-                <input [(ngModel)]=address2 type="text" class="form-control" id="address2">
+                <input
+                [(ngModel)]=address2
+                type="text"
+                class="form-control"
+                id="address2"
+                name="userAddress2"
+                >
             </div>
         </div>
-    
+        <button class="btn btn-sm" *ngIf="!showAddress2" type="toggle" (click)="showAddress()">Add Address Line 2</button>
+        <button class="btn btn-sm" *ngIf="showAddress2" type="toggle" (click)="showAddress()">Hide Address Line 2</button>
         <div class="form-group row">
                 <div class="col-sm-1"></div>
                     <label for="city" class="col-sm-4 col-form-label">City:</label>
                     <div class="col-sm-4">
-                    <input [(ngModel)]=city type="text" class="form-control" id="city">
+                    <input
+                    [(ngModel)]=city
+                    type="text"
+                    class="form-control"
+                    id="city"
+                    name="city"
+                    disabled>
                 </div>
         </div>
-            
+
             <div class="form-group row">
                 <div class="col-sm-1"></div>
                 <label for="state" class="col-sm-4 col-form-label">State:</label>
                 <div class="col-sm-4">
-                    <select class="form-control" name="states" id="state" [(ngModel)]=hState required>
+                    <select class="form-control" name="states" id="state" [(ngModel)]=hState required disabled>
                         <option value="" selected disabled>Select a state</option>
                         <option value="AL">Alabama</option>
                         <option value="AK">Alaska</option>
@@ -93,10 +129,17 @@
                     <div class="col-sm-1"></div>
                         <label for="zipcode" class="col-sm-4 col-form-label">Zipcode:</label>
                         <div class="col-sm-4">
-                        <input [(ngModel)]=zipcode type="text" class="form-control" id="zipcode">
+                        <input [(ngModel)]=zipcode
+                        type="text"
+                        class="form-control"
+                        id="zipcode"
+                        name="zipcode"
+                        disabled>
                         <p *ngIf="success != ''" class="success">{{success}}</p>
+                        <p *ngIf="fali != ''" class="danger">{{fail}}</p>
                     </div>
             </div>
-        
-        <button type="submit" class="btn btn-primary myBtn" (click)="updatesContactInfo()">Save</button>
+
+        <button type="submit" [disabled]="!userAddress.valid" class="btn btn-primary myBtn" (click)="updatesContactInfo()">Save</button>
+
     </div>

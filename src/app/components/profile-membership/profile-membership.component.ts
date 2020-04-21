@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { User } from 'src/app/models/user';
+import * as jwt from "jwt-decode";
 @Component({
   selector: 'app-profile-membership',
   templateUrl: './profile-membership.component.html',
@@ -14,7 +15,10 @@ export class ProfileMembershipComponent implements OnInit {
   success: string;
   constructor(private userService: UserService) { }
   ngOnInit() {
-    this.currentUser = this.userService.getUserById2(sessionStorage.getItem("userid")).subscribe((response)=>{
+    
+    let token = jwt(localStorage.getItem("id_token"));
+
+    this.currentUser = this.userService.getUserByUserName(token.sub).subscribe((response)=>{
       this.profileObject = response;
     });
   }
@@ -23,5 +27,6 @@ export class ProfileMembershipComponent implements OnInit {
     this.profileObject.active = this.active;
     this.userService.updateUserInfo(this.profileObject);
     this.success = "Updated Successfully!";
+  
   }
 }

@@ -24,16 +24,16 @@ export class DriverContactModalComponent implements OnInit {
     this.sleep(2000).then(() => {
      //show drivers on map
      this.showDriversOnMap(sessionStorage.getItem("origin"), sessionStorage.getItem("destination"));
-     
+
     });
   }
 
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-  
+
 getGoogleApi()  {
-    this.http.get(`${environment.loginUri}getGoogleApi`)
+    this.http.get(`${environment.loginUri}/getGoogleApi`)
        .subscribe(
                  (response) => {
                      //console.log(response);
@@ -42,22 +42,22 @@ getGoogleApi()  {
                            let script: HTMLScriptElement = document.createElement('script');
                            script.addEventListener('load', r => resolve());
                            script.src = `http://maps.googleapis.com/maps/api/js?key=${response["googleMapAPIKey"][0]}`;
-                           document.head.appendChild(script);      
-                     }); 
-               }    
+                           document.head.appendChild(script);
+                     });
+               }
            }
        );
    }
 
   showDriversOnMap(origin, destination){
-     
+
       var directionsService = new google.maps.DirectionsService;
       var directionsRenderer = new google.maps.DirectionsRenderer({
          draggable: true,
          map: this.map
        });
        this.displayRoute(origin, destination, directionsService, directionsRenderer);
-  
+
   }
 
 
