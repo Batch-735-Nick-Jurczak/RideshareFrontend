@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
+import * as jwt from "jwt-decode";
 
 /**
  * This is a navbar component.
@@ -46,7 +47,8 @@ export class PreferenceComponent implements OnInit {
    */
 
   getPreference() {
-    this.userService.getUserById(this.user.userId).then(response => {
+    let token = jwt(sessionStorage.getItem("id_token"));
+    this.userService.getUserByUserName(token.sub).subscribe(response => {
       if (response) {
         this.user = response;
       } else {

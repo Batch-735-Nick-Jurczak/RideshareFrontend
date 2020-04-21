@@ -3,6 +3,7 @@ import { UserService } from "src/app/services/user-service/user.service";
 import { Router } from "@angular/router";
 import { User } from "src/app/models/user";
 import { analyzeAndValidateNgModules } from "@angular/compiler";
+import * as jwt from "jwt-decode";
 
 @Component({
   selector: "app-profile-contact",
@@ -36,8 +37,10 @@ export class ProfileContactComponent implements OnInit {
     /**
      *calling the user service to get the current users information
      */
+    let token = jwt(sessionStorage.getItem("id_token"));
+
     this.userService
-      .getUserById2(sessionStorage.getItem("userid"))
+      .getUserByUserName(token.sub)
       .subscribe((response) => {
         /**
          *setting the current user to the local user profile

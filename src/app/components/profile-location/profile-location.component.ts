@@ -72,7 +72,7 @@ formattedAddress:any = "";
 
 
 
-    let token = jwt(localStorage.getItem("id_token"));
+    let token = jwt(sessionStorage.getItem("id_token"));
     this.userService.getUserByUserName(token.sub).subscribe((response) => {
       console.log(response);
       this.currentUser = response;

@@ -96,8 +96,6 @@ export class DriverListComponent implements OnInit {
    */
 
    ngOnInit() {
-    // get google api key to compute distance and duration
-    this.getGoogleApi();
 
     // sleep for 1 second while the google
     // API key is grabbed and then initilize the drivers
@@ -245,26 +243,6 @@ export class DriverListComponent implements OnInit {
    */
   sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-
-  /**
-   * getGoogleApi gets the API key
-   * to be able to leverage the Google API
-   */
-  getGoogleApi() {
-    this.http
-      .get(`${environment.loginUri}/getGoogleApi`)
-      .subscribe((response) => {
-        if (response['googleMapAPIKey'] !== undefined) {
-          new Promise((resolve) => {
-            const script: HTMLScriptElement = document.createElement('script');
-            script.addEventListener('load', () => resolve());
-            script.src = `http://maps.googleapis.com/maps/api/js?key=${response['googleMapAPIKey'][0]}`;
-            document.head.appendChild(script);
-          });
-        }
-      });
   }
 
   /**

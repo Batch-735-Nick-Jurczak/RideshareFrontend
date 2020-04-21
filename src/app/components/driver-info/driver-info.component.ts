@@ -5,6 +5,9 @@ import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Router } from '@angular/router';
 import { BatchService } from 'src/app/services/batch-service/batch.service';
 import { Batch } from 'src/app/models/batch';
+import { UserService } from 'src/app/services/user-service/user.service';
+import * as jwt from "jwt-decode";
+import { User } from 'src/app/models/user';
 
 
 @Component({
@@ -53,7 +56,7 @@ export class DriverInfoComponent implements OnInit {
    * @param batchService A batch service is injected.
    */
 
-  constructor(private carService: CarService, private authService: AuthService, private router: Router, private batchService: BatchService) { }
+  constructor(private carService: CarService, private authService: AuthService, private router: Router, private batchService: BatchService, private userService: UserService) { }
 
   /**
    * A function that set the component
@@ -73,7 +76,10 @@ export class DriverInfoComponent implements OnInit {
    */
 
   orderByLocation() {
-    let userLocation = this.authService.user.batch.batchLocation;
+    let token = jwt(sessionStorage.getItem("id_token"));
+    let userLocation;
+    this.userService.getUserByUserName(token.sub).subscribe(user => userLocation = user.batch.batchLocation);
+
 
     this.allAvailableCars.sort((a, b) => a.user.batch.batchLocation > b.user.batch.batchLocation ? 1 : -1);
     this.allAvailableCars = this.allAvailableCars.filter(car => car.user.batch.batchLocation === userLocation).concat(this.allAvailableCars.filter(car => car.user.batch.batchLocation !== userLocation));

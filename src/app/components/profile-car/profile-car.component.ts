@@ -45,7 +45,7 @@ export class ProfileCarComponent implements OnInit {
       seats: new FormControl(),
     });
 
-    let token = jwt(localStorage.getItem("id_token"));
+    let token = jwt(sessionStorage.getItem("id_token"));
 
     this.userService.getUserByUserName(token.sub).subscribe((response) => {
       this.currentUser = response;

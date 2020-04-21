@@ -13,10 +13,7 @@
         </mat-form-field> -->
 
 
-        <input ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places" (onAddressChange)="handleAddressChange($event)"/>
-        <p>{{formattedAddress}}</p>
-
-
+<form>
         <div class="form-group row">
             <div class="col-sm-1"></div>
                 <label for="address" class="col-sm-4 col-form-label">Address:</label>
@@ -141,5 +138,5 @@
             </div>
 
         <button type="submit" [disabled]="!userAddress.valid" class="btn btn-primary myBtn" (click)="updatesContactInfo()">Save</button>
-
+      </form>
     </div>
