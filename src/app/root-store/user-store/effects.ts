@@ -12,10 +12,10 @@ import { heLocale } from 'ngx-bootstrap';
 export class UserStoreEffects{
     constructor(
         private authService: AuthService,
-        private userService: UserService, 
+        private userService: UserService,
         private actions$: Actions) {}
 
-  
+
 
     @Effect()
     loginRequestEffect$ = this.actions$.pipe(

@@ -1,6 +1,9 @@
 import { Component, OnInit, NgModule, TemplateRef } from '@angular/core';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { BsModalService, BsModalRef} from 'ngx-bootstrap';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { User } from "src/app/models/user";
 
 @Component({
 	selector: 'app-login',
@@ -36,7 +39,7 @@ export class LoginComponent implements OnInit {
 	 * @param authService An auth service is injected.
 	 *
 	 */
-	constructor(private modalService :BsModalService,private authService: AuthService) { }
+	constructor(private modalService :BsModalService,private authService: AuthService, private router: Router) { }
 
 	ngOnInit() {
 	}
@@ -69,12 +72,11 @@ export class LoginComponent implements OnInit {
 	login() {
 		this.pwdError ='';
     this.usernameError= '';
-    let auth = !this.authService.login(this.userName, this.passWord);
-    console.log(auth);
-    if(!auth){
-      this.loginFailed();
-    }else {
+    let user = this.authService.login(this.userName, this.passWord);
+    if(user){
       this.modalService.hide(0);
+    }else {
+      this.loginFailed();
     }
 
 	}
