@@ -10,15 +10,15 @@ import { analyzeAndValidateNgModules } from "@angular/compiler";
   styleUrls: ["./profile-contact.component.css"],
 })
 export class ProfileContactComponent implements OnInit {
- 
+
   /**
-   *Created a user to hold the current user information comming from 
+   *Created a user to hold the current user information comming from
    *database
    */
   profileObject: User;
   /**
    *Create variables to hold the information in the form
-   * 
+   *
    */
   firstName: string;
   lastName: string;
@@ -66,13 +66,13 @@ export class ProfileContactComponent implements OnInit {
     this.profileObject.email = this.email;
     this.profileObject.phoneNumber = this.phone;
     this.success = "Updated Successfully!";
+    // TODO: Incorporate to display result
     let err = this.userService
-      .updateUserInfo(this.profileObject)
-      .catch((d) => this.displayResults(d.error.errors));
+      .updateUserInfo(this.profileObject).subscribe();
   }
 
   /**
-   * The displayResults function is used to display the error validations from the backend. 
+   * The displayResults function is used to display the error validations from the backend.
    * @param results are the results from the error log
    */
   displayResults(results) {
@@ -91,11 +91,11 @@ export class ProfileContactComponent implements OnInit {
          case "firstName":
          this.success =  "Invalid First Name was given!";
          break;
-         case "phoneNumber":  
+         case "phoneNumber":
          this.success =  "Invalid Phone Number was given!";
          break;
          default:
-          this.success = "Failed to process request";            
+          this.success = "Failed to process request";
         }
     }else{
       for(let i=0;i<results.length;i++){
@@ -111,9 +111,9 @@ export class ProfileContactComponent implements OnInit {
              case "firstName":
             reFormResult =  "Invalid First Name";
              break;
-             case "phoneNumber":  
+             case "phoneNumber":
              reFormResult =  "Invalid Phone Number";
-             break;           
+             break;
             }
           respon = respon +reFormResult + ", ";
         }else{
@@ -127,9 +127,9 @@ export class ProfileContactComponent implements OnInit {
              case "firstName":
             reFormResult =  "Invalid First Name";
              break;
-             case "phoneNumber":  
+             case "phoneNumber":
              reFormResult =  "Invalid Phone Number";
-             break;           
+             break;
             }
           respon = respon + " and " +reFormResult + " was given!";
         }

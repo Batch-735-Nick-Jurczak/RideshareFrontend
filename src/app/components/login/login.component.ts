@@ -1,6 +1,5 @@
 import { Component, OnInit, NgModule, TemplateRef } from "@angular/core";
 import { AuthService } from "src/app/services/auth-service/auth.service";
-import { BsModalService, BsModalRef } from "ngx-bootstrap";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { User } from "src/app/models/user";
