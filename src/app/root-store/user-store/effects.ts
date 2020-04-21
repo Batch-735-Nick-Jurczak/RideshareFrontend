@@ -6,7 +6,6 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth-service/auth.service';
 import { UserService } from '../../services/user-service/user.service';
 import * as UserActions from './actions';
-import { heLocale } from 'ngx-bootstrap';
 
 @Injectable()
 export class UserStoreEffects{
@@ -59,7 +58,7 @@ export class UserStoreEffects{
              ))
      )
      @Effect()
-     loadUserEffect$ = this.actions$.pipe(
+     loadUsersEffect$ = this.actions$.pipe(
           ofType<UserActions.LoadUsersAction>(
               UserActions.UserActionTypes.LOAD_ALL_USERS_REQUEST
           ),

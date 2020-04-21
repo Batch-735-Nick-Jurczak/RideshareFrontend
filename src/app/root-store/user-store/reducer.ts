@@ -36,6 +36,21 @@ export function UserReducer(
         error: null,
       };
     }
+    case UserActionTypes.LOAD_ALL_USERS_SUCCESS: {
+      return {
+        ...state,
+        allUsers: action.payload,
+        loading: false,
+        error: null,
+      };
+    }
+    case UserActionTypes.LOAD_ALL_USERS_FAILURE: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    }
     case UserActionTypes.UPDATE_USER_REQUEST: {
       return {
         ...state,
@@ -43,14 +58,21 @@ export function UserReducer(
         error: null,
       };
     }
-    case UserActionTypes.LOAD_ALL_USERS_REQUEST:{
-        return{
-            ...state,
-            loading:true,
-            error:null
-        };
+    case UserActionTypes.UPDATE_USER_SUCCESS: {
+      return {
+        ...state,
+        currentUser: action.payload,
+        loading: false,
+        error: null,
+      };
     }
-
+    case UserActionTypes.UPDATE_USER_FAILURE: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    }
     default: {
       return state;
     }
