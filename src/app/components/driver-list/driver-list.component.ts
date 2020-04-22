@@ -98,10 +98,10 @@ export class DriverListComponent implements OnInit {
    ngOnInit() {
 
     // sleep for 1 second while the google
-    // API key is grabbed and then initilize the drivers
+    // Initilize the drivers
     this.sleep(1000).then(() => {
-      //this.userService.getRidersForBatch(1).subscribe(
-      this.userService.getRidersForLocation1(this.location).subscribe(
+
+      this.userService.getRidersForLocation1(sessionStorage.getItem("user_id")).subscribe(
         drivers => this.drivers = this.getDistanceAndDuration(this.location, drivers));
     })
 
@@ -338,7 +338,7 @@ export class DriverListComponent implements OnInit {
         (response, status) => {
           if (status !== 'OK') {
             console.log('Error was: ' + status);
-          } else if (sessionStorage.getItem("userid") == element.userId) {
+          } else if (sessionStorage.getItem("user_id") == element.userId) {
 
           } else {
             const results = response.rows[0].elements;

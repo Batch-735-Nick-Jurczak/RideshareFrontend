@@ -245,8 +245,8 @@ export class UserService {
     /**
      * A function that gets the top 5 drivers based on distance
      */
-	getRidersForLocation1(location: string): Observable<any> {
-		return this.http.get(this.url + 'driver/' + location)
+	getRidersForLocation1(userId: string): Observable<any> {
+		return this.http.get(this.url + 'driver?' + "userId="+userId+"&filter=1&page=1")
 	}
     /**
      * The getRidersForBatch gets all drivers that are available,

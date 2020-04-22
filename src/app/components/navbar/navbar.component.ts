@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { User } from 'src/app/models/user';
 import { Admin } from 'src/app/models/admin';
 import {SignupModalComponent} from '../sign-up-modal/sign-up-modal.component';
+import * as jwt from "jwt-decode";
 
 @Component({
   selector: 'app-navbar',
@@ -53,7 +54,8 @@ export class NavbarComponent implements OnInit {
       this.currentUser ='';
     }
     if (this.authService.isLoggedIn()) {
-      this.userService.getUserById(userId).then((response)=>{
+      let token = jwt(sessionStorage.getItem("id_token"));
+      this.userService.getUserByUserName(token.sub).subscribe((response)=>{
         this.name = response.firstName;
       })
     }
