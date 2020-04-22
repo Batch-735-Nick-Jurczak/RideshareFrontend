@@ -6,6 +6,7 @@ import { User } from "src/app/models/user";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { UserService } from "src/app/services/user-service/user.service";
 import { HttpClient } from "@angular/common/http";
+import { relativeTimeThreshold } from 'moment';
 
 @Component({
   selector: "app-login",
@@ -50,7 +51,8 @@ export class LoginComponent implements OnInit {
     private modalService: NgbModal,
     private authService: AuthService,
     private userService: UserService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   /**
@@ -59,81 +61,7 @@ export class LoginComponent implements OnInit {
    * the user service is called to retrieve all users.
    */
   ngOnInit() {
-    this.userService.getAllUsers().subscribe((allUsers) => {
-      this.allUsers = allUsers;
-      this.totalPage = Math.ceil(this.allUsers.length / 5);
-      this.users = this.allUsers.slice(0, 5);
-    });
-  }
 
-  /**
-   * A function that allows the user to choose an account to log in as
-   * @param user
-   */
-  changeUser(user) {
-    this.showDropDown = false;
-    this.curPage = 1;
-    this.totalPage = Math.ceil(this.allUsers.length / 5);
-    this.users = this.allUsers.slice(this.curPage * 5 - 5, this.curPage * 5);
-    this.chosenUserFullName = `${user.firstName} ${user.lastName}: ${
-      user.driver ? "Driver" : "Rider"
-    }`;
-    this.chosenUser = user;
-  }
-
-  /**
-   * A GET method the fetches all the users
-   */
-  searchAccount() {
-    this.showDropDown = true;
-    if (this.chosenUserFullName.length) {
-      this.users = this.allUsers.filter((user) => {
-        return (
-          user.firstName
-            .toLowerCase()
-            .startsWith(this.chosenUserFullName.toLowerCase()) ||
-          user.lastName
-            .toLowerCase()
-            .startsWith(this.chosenUserFullName.toLowerCase()) ||
-          `${user.firstName} ${user.lastName}`
-            .toLowerCase()
-            .startsWith(this.chosenUserFullName.toLowerCase()) ||
-          `${user.firstName} ${user.lastName}: ${
-            user.driver ? "Driver" : "Rider"
-          }`
-            .toLowerCase()
-            .startsWith(this.chosenUserFullName.toLowerCase())
-        );
-      });
-      this.totalPage = Math.ceil(this.users.length / 5);
-    } else {
-      this.curPage = 1;
-      this.totalPage = Math.ceil(this.allUsers.length / 5);
-      this.users = this.allUsers.slice(this.curPage * 5 - 5, this.curPage * 5);
-    }
-  }
-
-  /**
-   * A toggle function to show the dropdown
-   */
-  toggleDropDown() {
-    this.showDropDown = !this.showDropDown;
-  }
-
-  /**
-   * Set next page
-   */
-  nextPage() {
-    this.curPage++;
-    this.users = this.allUsers.slice(this.curPage * 5 - 5, this.curPage * 5);
-  }
-
-  /**
-   * Set prev page
-   */
-  prevPage() {
-    this.curPage--;
-    this.users = this.allUsers.slice(this.curPage * 5 - 5, this.curPage * 5);
   }
 
   /**
@@ -156,6 +84,14 @@ export class LoginComponent implements OnInit {
     this.modalRef = this.modalService.open(template);
   }
 
+    /**
+   * Function which sets a timeout for a desired duration.
+   * @param ms the number of milliseconds
+   */
+  sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   /**
    * A login function that checks if the user information
    * is correct in the database, if true then it routes
@@ -164,11 +100,24 @@ export class LoginComponent implements OnInit {
   login() {
     this.pwdError = "";
     this.usernameError = "";
-    let user = this.authService.login(this.userName, this.passWord);
-    if (user) {
-      this.modalRef.close();
+    this.authService.login(this.userName, this.passWord).subscribe((user) => {
+      this.authService.setSession(user);
+
+    })
+
+    this.sleep(500).then( () => {
+    if (sessionStorage.getItem("user_id")) {
+      this.modalRef.dismiss();
+      if (sessionStorage.getItem("user_id")) {
+        this.router.navigate(["/home/riders"]);
+
+      } else {
+        this.router.navigate(["/home/drivers"]);
+      }
     } else {
       this.loginFailed();
     }
+
+  });
   }
 }

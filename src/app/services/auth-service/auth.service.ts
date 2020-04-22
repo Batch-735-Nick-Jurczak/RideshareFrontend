@@ -46,48 +46,21 @@ export class AuthService {
    * @param user
    */
 
-  login(userName: string, password: string): Observable <User> {
+  login(userName: string, password: string): Observable<User> {
     let user = {username: userName, password: password};
-    this.http.post<User>(this.url, user).subscribe((res) => {
+    return this.http.post<User>(this.url, user);
 
-      if (res) {
-        this.setSession(res);
-
-        if (res.role === "ADMIN") {
-          this.admin.adminId = res.userId;
-          this.admin.userName = res.userName;
-        } else {
-          this.user = res;
-        }
-        if (res.driver) {
-          this.router.navigate(["/home/riders"]);
-          return res;
-        } else {
-          this.router.navigate(["/home/drivers"]);
-          return res;
-        }
-
-      } else {
-        return null;
-      }
-      // TODO: Figure out ngrx
-      // this.fireIsLoggedIn.emit(res);
-
-    });
-
-    return null;
   }
 
   /**
    * This function sets the session.
    */
 
-  private setSession(authResult) {
+  setSession(authResult) {
 
     let token = jwt(authResult.token);
 
     const expiresAt = moment().add(token.exp);
-    console.log(expiresAt, " This is the expitration");
 
     sessionStorage.setItem("id_token", authResult.token);
     sessionStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
@@ -133,7 +106,7 @@ export class AuthService {
    */
 
   getExpiration() {
-    const expiration = localStorage.getItem("expires_at");
+    const expiration = sessionStorage.getItem("expires_at");
     const expiresAt = JSON.parse(expiration);
     return moment(expiresAt);
   }
