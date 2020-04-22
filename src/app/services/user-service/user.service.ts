@@ -35,6 +35,7 @@ export class UserService {
 	 * Set up the url string to the env var
 	 * Creates a new user object
 	 */
+	urll: string = environment.userUri;
 	url: string = environment.userUri + "/";
 	user: User = new User();
 
@@ -119,7 +120,7 @@ export class UserService {
 	 * @returns User that was created
 	 */
 	addUser(user: User): Observable<User> {
-		return this.http.post<User>(this.url, user, { headers: this.headers });
+		return this.http.post<User>(this.url+"register", user, { headers: this.headers });
 	}
 
 	/**
@@ -188,9 +189,9 @@ export class UserService {
 	 * @param user
 	 */
 
-	updateUserInfo(user: User):Observable<User> {
+	updateUserInfo(user: User) {
 		//console.log(user);
-		return this.http.put<User>(this.url, user);
+		return this.http.put<User>(this.urll, user).toPromise();
 	}
 	/**
 	 * A GET method that retrieves a driver by Id

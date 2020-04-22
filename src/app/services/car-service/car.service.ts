@@ -18,7 +18,7 @@ export class CarService {
    * Set the url string to the env var
    * An user is created.
    */
-
+  urll: string = environment.carUri;
   url: string = environment.carUri + "/";
   user: User = new User();
 
@@ -62,7 +62,7 @@ export class CarService {
 
   updateCarInfo(car: Car) {
     //console.log(user);
-    return this.http.put(this.url, car).toPromise();
+    return this.http.put(this.url+"", car).toPromise();
   }
 
   /**

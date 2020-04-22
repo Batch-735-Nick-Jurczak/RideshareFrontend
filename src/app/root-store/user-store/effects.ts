@@ -42,33 +42,33 @@ export class UserStoreEffects{
                 map(
                     user => new UserActions.AddUserSuccessAction(user)),
                 catchError(error => observableOf(new UserActions.AddUserFailureAction(error)))
-            ))
-    )
-    @Effect()
-    updateUserEffect$ = this.actions$.pipe(
-         ofType<UserActions.UpdateUserAction>(
-             UserActions.UserActionTypes.UPDATE_USER_REQUEST
-         ),
-         switchMap(action =>
-             this.userService.updateUserInfo(action.payload)
-             .pipe(
-                 map(
-                     user => new UserActions.UpdateUserSuccessAction(user)),
-                 catchError(error => observableOf(new UserActions.UpdateUserFailureAction(error)))
-             ))
-     )
-     @Effect()
-     loadUsersEffect$ = this.actions$.pipe(
-          ofType<UserActions.LoadUsersAction>(
-              UserActions.UserActionTypes.LOAD_ALL_USERS_REQUEST
-          ),
-          switchMap(action =>
-              this.userService.getAllUsers()
-              .pipe(
-                  map(
-                      users => new UserActions.LoadUsersSuccessAction(users)),
-                  catchError(error => observableOf(new UserActions.LoadUsersFailureAction(error)))
-              ))
-      )
+            )) )
+    // @Effect()
+    // updateUserEffect$ = this.actions$.pipe(
+    //      ofType<UserActions.UpdateUserAction>(
+    //          UserActions.UserActionTypes.UPDATE_USER_REQUEST
+    //      ),
+    //      switchMap(action =>
+    //          this.userService.updateUserInfo(action.payload)
+    //          .pipe(
+    //              map(
+    //                  user => new UserActions.UpdateUserSuccessAction(user)),
+    //              catchError(error => observableOf(new UserActions.UpdateUserFailureAction(error)))
+    //          ))
+    //  )
+
+    //  @Effect()
+    //  loadUsersEffect$ = this.actions$.pipe(
+    //       ofType<UserActions.LoadUsersAction>(
+    //           UserActions.UserActionTypes.LOAD_ALL_USERS_REQUEST
+    //       ),
+    //       switchMap(action =>
+    //           this.userService.getAllUsers()
+    //           .pipe(
+    //               map(
+    //                   users => new UserActions.LoadUsersSuccessAction(users)),
+    //               catchError(error => observableOf(new UserActions.LoadUsersFailureAction(error)))
+    //           ))
+    //   )
 
 }

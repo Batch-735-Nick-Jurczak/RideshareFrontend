@@ -71,7 +71,12 @@ export class ProfileContactComponent implements OnInit {
     this.success = "Updated Successfully!";
     // TODO: Incorporate to display result
     let err = this.userService
-      .updateUserInfo(this.profileObject).subscribe();
+      .updateUserInfo(this.profileObject).catch(
+        err => {
+          this.displayResults(err.error.errors);
+        }
+      )
+
   }
 
   /**
